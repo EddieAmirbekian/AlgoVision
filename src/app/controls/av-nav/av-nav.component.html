@@ -12,7 +12,7 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span>AlgoVision</span>
-      <mat-nav-list>
+      <mat-nav-list class="nav-list">
         <ng-container mat-list-item *ngFor="let action of actions | async">
           <ng-template [ngIf]="!action.isMenu">
             <ng-template [ngIf]="!action.isRaised">
@@ -33,20 +33,13 @@
                     [color]="action.color"
                     [disabled]="action.disabled">
                 {{action.title}}
+                <mat-icon>keyboard_arrow_down</mat-icon>
             </button>
             <mat-menu #menu>
-              <div mat-menu-item *ngFor="let child of action.children">
-                <ng-template [ngIf]="!child.isRaised">
-                  <button mat-button *ngIf="child.isVisible" [color]="child.color" [disabled]="child.disabled">
-                    {{child.title}}
-                  </button>
-                </ng-template>
-                <ng-template [ngIf]="child.isRaised">
-                  <button mat-raised-button *ngIf="child.isVisible" [color]="child.color" [disabled]="child.disabled">
-                    {{child.title}}
-                  </button>
-                </ng-template>
-              </div>
+              <button mat-menu-item *ngFor="let child of action.children"
+                      [disabled]="child.disabled">
+                {{child.title}}
+              </button>
             </mat-menu>
           </ng-template>
         </ng-container>
