@@ -22,8 +22,13 @@ export class SortingService {
     return this.array.asObservable();
   }
 
+  public getArrayLength(): Observable<number> {
+    return this.arrayLength.asObservable();
+  }
+
   public setLength(len: number): void {
     this.arrayLength.next(len);
+    this.generateArray();
   }
 
   constructor() {

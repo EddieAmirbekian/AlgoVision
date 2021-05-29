@@ -1,3 +1,11 @@
-<div class="sorter-container">
-    <div #bar class="sorter-item" [style.height]="item + 'px'" *ngFor="let item of items | async"></div>
+<div class="sorter">
+    <div class="sorter-slider">
+        <span>Change number of items: </span>
+        <mat-slider min="49" max="149" step="1" [value]="length | async" (input)="onSliderChange($event)">
+        </mat-slider>
+    </div>
+    <div class="sorter-container">
+        <div #bar class="sorter-container-item" [style.height]="item + 'px'" *ngFor="let item of items | async">
+        </div>
+    </div>
 </div>

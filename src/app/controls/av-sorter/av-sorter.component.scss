@@ -1,12 +1,26 @@
-.sorter-container {
-  margin-top: 20px;
-  display: flex;
-  align-items: flex-end;
+.sorter {
+  &-slider {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  .sorter-item {
-    display: block;
-    width: 10px;
-    margin-left: 3px;
-    background-color: #2a3479;
+    span {
+      margin-right: 10px;
+    }
+  }
+
+  &-container {
+    margin-top: 20px;
+    display: flex;
+    align-items: flex-end;
+    bottom: 0;
+    padding: 0 50px;
+    justify-content: center;
+
+    &-item {
+      width: 10px;
+      margin-left: 3px;
+      background-color: #562a79;
+    }
   }
 }

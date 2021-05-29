@@ -1,3 +1,6 @@
 <av-nav>
-    <av-sorter *ngIf="isSorting | async"></av-sorter>
+    <av-sorter *ngIf="isSorting | async; else isPathFinder"></av-sorter>
+    <ng-template #isPathFinder>
+        <av-grid></av-grid>
+    </ng-template>
 </av-nav>
