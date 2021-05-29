@@ -1,0 +1,12 @@
+.sorter-container {
+  margin-top: 20px;
+  display: flex;
+  align-items: flex-end;
+
+  .sorter-item {
+    display: block;
+    width: 10px;
+    margin-left: 3px;
+    background-color: #2a3479;
+  }
+}

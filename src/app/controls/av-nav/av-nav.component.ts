@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ActionModel } from '../models/action.model';
 import { ActionService } from 'src/app/services/action.service';
+import { Algorithm } from '../models/algorithm.enum';
 
 @Component({
   selector: 'av-nav',
@@ -9,6 +10,8 @@ import { ActionService } from 'src/app/services/action.service';
   styleUrls: ['./av-nav.component.scss'],
 })
 export class AvNavComponent {
+  public selectedAlgorithm: Algorithm = Algorithm.NONE;
+
   constructor(private actionService: ActionService) {}
 
   public setActions(actionsType: 'pathfinding' | 'sorting') {

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { of, Observable, BehaviorSubject } from 'rxjs';
 import { ActionModel } from '../controls/models/action.model';
+import { SortingService } from './sorting.service';
 
 @Injectable()
 export class ActionService {
@@ -19,7 +20,9 @@ export class ActionService {
   ];
 
   private sortingActions: ActionModel[] = [
-    new ActionModel('Generate New Array').button(),
+    new ActionModel('Generate New Array').button().subscribe(() => {
+      this.sortingService.generateArray();
+    }),
     new ActionModel('Algorithms')
       .menu()
       .addChild(new ActionModel('Merge Sort').button())
@@ -28,6 +31,8 @@ export class ActionService {
       .addChild(new ActionModel('Bubble Sort').button()),
     new ActionModel('Sort!').button().raised().accent(),
   ];
+
+  constructor(private sortingService: SortingService) {}
 
   private getPathFindingActions(): Observable<ActionModel[]> {
     return of(this.pathFindingActions);
