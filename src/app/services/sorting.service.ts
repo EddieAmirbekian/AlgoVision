@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Algorithm } from '../controls/models/algorithm.enum';
-import { getMergeSortAnimations } from '../helpers/sorting-algorithms';
+import { MergeSort } from '../helpers/merge-sort';
 import { AlgorithmService } from './algorithm.service';
 
 const PRIMARY_COLOR = '#7cb342';
@@ -63,30 +63,12 @@ export class SortingService {
   }
 
   private mergeSort(items: number[]) {
+    const bars = document.getElementsByClassName(
+      'sorter-container-item'
+    ) as HTMLCollectionOf<HTMLElement>;
     const cpyItems = items.slice();
-    const animations = getMergeSortAnimations(cpyItems);
-    for (let i = 0; i < animations.length; i++) {
-      const arrayBars = document.getElementsByClassName(
-        'sorter-container-item'
-      );
-      const isColorChange = i % 3 !== 2;
-      if (isColorChange) {
-        const [barOneIdx, barTwoIdx] = animations[i];
-        const barOneStyle = (arrayBars[barOneIdx] as HTMLElement).style;
-        const barTwoStyle = (arrayBars[barTwoIdx] as HTMLElement).style;
-        const color = i % 3 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
-        setTimeout(() => {
-          barOneStyle.backgroundColor = color;
-          barTwoStyle.backgroundColor = color;
-        }, i * ANIMATION_SPEED_MS);
-      } else {
-        setTimeout(() => {
-          const [barOneIdx, newHeight] = animations[i];
-          const barOneStyle = (arrayBars[barOneIdx] as HTMLElement).style;
-          barOneStyle.height = `${newHeight}px`;
-        }, i * ANIMATION_SPEED_MS);
-      }
-    }
+    const mergeSortHelper = new MergeSort(bars, cpyItems);
+    mergeSortHelper.mergePartition(0, this.arrayLength.value - 1);
   }
 
   private quickSort(items: number[]) {}
