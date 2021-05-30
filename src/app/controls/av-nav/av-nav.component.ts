@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ActionModel } from '../models/action.model';
 import { ActionService } from 'src/app/services/action.service';
 import { Algorithm } from '../models/algorithm.enum';

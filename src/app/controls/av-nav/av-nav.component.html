@@ -37,7 +37,7 @@
             </button>
             <mat-menu #menu>
               <button mat-menu-item *ngFor="let child of action.children"
-                      [disabled]="child.disabled">
+                      [disabled]="child.disabled" (click)="child.click()">
                 {{child.title}}
               </button>
             </mat-menu>
