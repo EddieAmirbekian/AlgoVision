@@ -1,14 +1,13 @@
+import { Sortable } from './sortable';
 import { ACCENT, PRIMARY, WARN } from './styles';
 
-export class MergeSort {
-  private currentDelay: number;
-  private readonly delayTime: number;
+export class MergeSort extends Sortable {
   constructor(
     public divs: HTMLCollectionOf<HTMLElement>,
-    public divSizes: number[]
+    public divSizes: number[],
+    public speed: number = 1
   ) {
-    this.currentDelay = 0;
-    this.delayTime = 10;
+    super(divs, divSizes, speed);
   }
 
   public mergePartition(start: number, end: number) {
@@ -49,12 +48,5 @@ export class MergeSort {
       this.divSizes[start++] = array[i];
       this.updateDiv(this.divs[start - 1], this.divSizes[start - 1], ACCENT); //Color update
     }
-  }
-
-  private updateDiv(container: HTMLElement, height: number, color: string) {
-    window.setTimeout(() => {
-      container.style.height = height + 'px';
-      container.style.backgroundColor = color;
-    }, (this.currentDelay += this.delayTime));
   }
 }

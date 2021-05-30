@@ -1,7 +1,11 @@
 <div class="sorter">
     <div class="sorter-slider">
         <span>Change number of items: </span>
-        <mat-slider min="49" max="149" step="1" [value]="length | async" (input)="onSliderChange($event)">
+        <mat-slider min="49" max="149" step="1" [value]="length | async" (input)="onNumberOfItemsChange($event)">
+        </mat-slider>
+
+        <span>Change speed of sorting: </span>
+        <mat-slider min="1" max="10" step="1" [value]="speed | async" (input)="onSpeedChange($event)">
         </mat-slider>
     </div>
     <div class="sorter-container">

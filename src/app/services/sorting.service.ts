@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Algorithm } from '../controls/models/algorithm.enum';
+import { BubbleSort } from '../helpers/bubble-sort';
+import { HeapSort } from '../helpers/heap-sort';
 import { MergeSort } from '../helpers/merge-sort';
+import { QuickSort } from '../helpers/quick-sort';
 import { AlgorithmService } from './algorithm.service';
-
-const PRIMARY_COLOR = '#7cb342';
-const SECONDARY_COLOR = '#ef6c00';
-const ANIMATION_SPEED_MS = 5;
 
 @Injectable()
 export class SortingService {
@@ -16,6 +15,7 @@ export class SortingService {
   public arrayLength: BehaviorSubject<number> = new BehaviorSubject<number>(
     this.initialLength
   );
+  public sortSpeed: BehaviorSubject<number> = new BehaviorSubject<number>(1);
 
   public generateArray(): void {
     this.array.next(
@@ -36,6 +36,14 @@ export class SortingService {
   public setLength(len: number): void {
     this.arrayLength.next(len);
     this.generateArray();
+  }
+
+  public getSortSpeed(): Observable<number> {
+    return this.sortSpeed.asObservable();
+  }
+
+  public setSpeed(speed: number) {
+    this.sortSpeed.next(speed);
   }
 
   constructor(private algorithmService: AlgorithmService) {
@@ -67,13 +75,38 @@ export class SortingService {
       'sorter-container-item'
     ) as HTMLCollectionOf<HTMLElement>;
     const cpyItems = items.slice();
-    const mergeSortHelper = new MergeSort(bars, cpyItems);
+    const mergeSortHelper = new MergeSort(bars, cpyItems, this.sortSpeed.value);
     mergeSortHelper.mergePartition(0, this.arrayLength.value - 1);
   }
 
-  private quickSort(items: number[]) {}
+  private quickSort(items: number[]) {
+    const bars = document.getElementsByClassName(
+      'sorter-container-item'
+    ) as HTMLCollectionOf<HTMLElement>;
+    const cpyItems = items.slice();
+    const quickSortHelper = new QuickSort(bars, cpyItems, this.sortSpeed.value);
+    quickSortHelper.quickSort(0, this.arrayLength.value - 1);
+  }
 
-  private heapSort(items: number[]) {}
+  private heapSort(items: number[]) {
+    const bars = document.getElementsByClassName(
+      'sorter-container-item'
+    ) as HTMLCollectionOf<HTMLElement>;
+    const cpyItems = items.slice();
+    const heapSortHelper = new HeapSort(bars, cpyItems, this.sortSpeed.value);
+    heapSortHelper.heapSort();
+  }
 
-  private bubbleSort(items: number[]) {}
+  private bubbleSort(items: number[]) {
+    const bars = document.getElementsByClassName(
+      'sorter-container-item'
+    ) as HTMLCollectionOf<HTMLElement>;
+    const cpyItems = items.slice();
+    const bubbleSortHelper = new BubbleSort(
+      bars,
+      cpyItems,
+      this.sortSpeed.value
+    );
+    bubbleSortHelper.bubbleSort();
+  }
 }
