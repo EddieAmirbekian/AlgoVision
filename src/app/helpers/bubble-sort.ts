@@ -11,7 +11,7 @@ export class BubbleSort extends Sortable {
   }
 
   public bubbleSort() {
-    for (var i = 0; i < this.divSizes.length - 1; i++) {
+    for (let i = 0; i < this.divSizes.length - 1; i++) {
       for (var j = 0; j < this.divSizes.length - i - 1; j++) {
         this.updateDiv(this.divs[j], this.divSizes[j], PRIMARY);
 
@@ -19,7 +19,7 @@ export class BubbleSort extends Sortable {
           this.updateDiv(this.divs[j], this.divSizes[j], WARN);
           this.updateDiv(this.divs[j + 1], this.divSizes[j + 1], WARN);
 
-          var temp = this.divSizes[j];
+          let temp = this.divSizes[j];
           this.divSizes[j] = this.divSizes[j + 1];
           this.divSizes[j + 1] = temp;
 

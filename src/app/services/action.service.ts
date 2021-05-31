@@ -62,6 +62,16 @@ export class ActionService {
         new ActionModel('Bubble Sort').button().subscribe(() => {
           this.setAlgorithm(Algorithm.BUBBLE);
         })
+      )
+      .addChild(
+        new ActionModel('Insertion Sort').button().subscribe(() => {
+          this.setAlgorithm(Algorithm.INSERTION);
+        })
+      )
+      .addChild(
+        new ActionModel('Selection Sort').button().subscribe(() => {
+          this.setAlgorithm(Algorithm.SELECTION);
+        })
       ),
     new ActionModel('Sort!')
       .button()

@@ -3,8 +3,10 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Algorithm } from '../controls/models/algorithm.enum';
 import { BubbleSort } from '../helpers/bubble-sort';
 import { HeapSort } from '../helpers/heap-sort';
+import { InsertionSort } from '../helpers/insertion-sort';
 import { MergeSort } from '../helpers/merge-sort';
 import { QuickSort } from '../helpers/quick-sort';
+import { SelectionSort } from '../helpers/selection-sort';
 import { AlgorithmService } from './algorithm.service';
 
 @Injectable()
@@ -65,6 +67,12 @@ export class SortingService {
       case Algorithm.BUBBLE:
         this.bubbleSort(this.array.value);
         break;
+      case Algorithm.INSERTION:
+        this.insertionSort(this.array.value);
+        break;
+      case Algorithm.SELECTION:
+        this.selectionSort(this.array.value);
+        break;
       default:
         console.error('Wrong algorithm.');
     }
@@ -108,5 +116,31 @@ export class SortingService {
       this.sortSpeed.value
     );
     bubbleSortHelper.bubbleSort();
+  }
+
+  private insertionSort(items: number[]) {
+    const bars = document.getElementsByClassName(
+      'sorter-container-item'
+    ) as HTMLCollectionOf<HTMLElement>;
+    const cpyItems = items.slice();
+    const insertionSortHelper = new InsertionSort(
+      bars,
+      cpyItems,
+      this.sortSpeed.value
+    );
+    insertionSortHelper.insertionSort();
+  }
+
+  private selectionSort(items: number[]) {
+    const bars = document.getElementsByClassName(
+      'sorter-container-item'
+    ) as HTMLCollectionOf<HTMLElement>;
+    const cpyItems = items.slice();
+    const selectionSortHelper = new SelectionSort(
+      bars,
+      cpyItems,
+      this.sortSpeed.value
+    );
+    selectionSortHelper.selectionSort();
   }
 }

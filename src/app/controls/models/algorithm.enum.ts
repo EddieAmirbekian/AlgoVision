@@ -8,4 +8,6 @@ export enum Algorithm {
   QUICK = 6,
   HEAP = 7,
   BUBBLE = 8,
+  INSERTION = 9,
+  SELECTION = 10,
 }
