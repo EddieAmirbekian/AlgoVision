@@ -35,7 +35,7 @@ export class SelectionSort extends Sortable {
         }
       }
 
-      if (minIndex != i) {
+      if (minIndex !== i) {
         let temp = this.divSizes[minIndex];
         this.divSizes[minIndex] = this.divSizes[i];
         this.divSizes[i] = temp;
