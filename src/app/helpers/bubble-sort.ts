@@ -11,8 +11,10 @@ export class BubbleSort extends Sortable {
   }
 
   public bubbleSort() {
-    for (let i = 0; i < this.divSizes.length - 1; i++) {
-      for (var j = 0; j < this.divSizes.length - i - 1; j++) {
+    let i: number;
+    let j: number;
+    for (i = 0; i < this.divSizes.length - 1; i++) {
+      for (j = 0; j < this.divSizes.length - i - 1; j++) {
         this.updateDiv(this.divs[j], this.divSizes[j], PRIMARY);
 
         if (this.divSizes[j] > this.divSizes[j + 1]) {

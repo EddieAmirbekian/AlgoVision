@@ -4,7 +4,7 @@ $av-primary: mat-palette($mat-indigo, 800);
 $av-accent: mat-palette($mat-light-green, 600);
 $av-warn: mat-palette($mat-orange, 800);
 
-$av-theme: mat-light-theme(
+$av-dark-theme: mat-dark-theme(
   (
     color: (
       primary: $av-primary,
@@ -14,13 +14,27 @@ $av-theme: mat-light-theme(
   )
 );
 
-@include angular-material-theme($av-theme);
+$av-light-theme: mat-light-theme(
+  (
+    color: (
+      primary: $av-primary,
+      accent: $av-accent,
+      warn: $av-warn,
+    ),
+  )
+);
+
+.light-theme {
+  @include angular-material-theme($av-light-theme);
+}
+
+.dark-theme {
+  @include angular-material-theme($av-dark-theme);
+}
 
 html,
 body {
   height: 100%;
-}
-body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }

@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AvGridComponent implements OnInit {
   public readonly rowsCount = 18;
-  public readonly colsCount = 50;
+  public readonly colsCount = 52;
 
   public nodes: number[][] = [];
 

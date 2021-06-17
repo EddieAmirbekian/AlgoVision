@@ -7,8 +7,9 @@ export class Sortable {
     public divSizes: number[],
     public speed: number = 1
   ) {
+    const sp = Math.pow(10, this.speed - 1);
     this.currentDelay = 0;
-    this.delayTime = Math.floor(10 / speed);
+    this.delayTime = 10000 / (Math.floor(this.divSizes.length / 10) * sp);
   }
 
   protected updateDiv(container: HTMLElement, height: number, color: string) {

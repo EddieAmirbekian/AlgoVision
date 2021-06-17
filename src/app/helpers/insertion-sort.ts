@@ -11,7 +11,8 @@ export class InsertionSort extends Sortable {
   }
 
   public insertionSort() {
-    for (var j = 0; j < this.divSizes.length; j++) {
+    let j: number;
+    for (j = 0; j < this.divSizes.length; j++) {
       this.updateDiv(this.divs[j], this.divSizes[j], PRIMARY);
 
       let key = this.divSizes[j];
@@ -26,7 +27,7 @@ export class InsertionSort extends Sortable {
         this.updateDiv(this.divs[i + 1], this.divSizes[i + 1], WARN);
 
         this.updateDiv(this.divs[i], this.divSizes[i], PRIMARY);
-        if (i == j - 1) {
+        if (i === j - 1) {
           this.updateDiv(this.divs[i + 1], this.divSizes[i + 1], PRIMARY);
         } else {
           this.updateDiv(this.divs[i + 1], this.divSizes[i + 1], PRIMARY);

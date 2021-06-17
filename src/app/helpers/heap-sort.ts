@@ -31,7 +31,7 @@ export class HeapSort extends Sortable {
     let r = 2 * i + 2;
 
     if (l < size && this.divSizes[l] > this.divSizes[largest]) {
-      if (largest != i) {
+      if (largest !== i) {
         this.updateDiv(this.divs[largest], this.divSizes[largest], PRIMARY);
       }
 
@@ -41,7 +41,7 @@ export class HeapSort extends Sortable {
     }
 
     if (r < size && this.divSizes[r] > this.divSizes[largest]) {
-      if (largest != i) {
+      if (largest !== i) {
         this.updateDiv(this.divs[largest], this.divSizes[largest], PRIMARY);
       }
 
@@ -50,18 +50,19 @@ export class HeapSort extends Sortable {
       this.updateDiv(this.divs[largest], this.divSizes[largest], WARN);
     }
 
-    if (largest != i) {
+    if (largest !== i) {
       this.swap(i, largest);
       this.maxHeapify(size, largest);
     }
   }
 
   public heapSort() {
-    for (let i = Math.floor(this.divSizes.length / 2) - 1; i >= 0; i--) {
+    let i: number;
+    for (i = Math.floor(this.divSizes.length / 2) - 1; i >= 0; i--) {
       this.maxHeapify(this.divSizes.length, i);
     }
 
-    for (var i = this.divSizes.length - 1; i > 0; i--) {
+    for (i = this.divSizes.length - 1; i > 0; i--) {
       this.swap(0, i);
       this.updateDiv(this.divs[i], this.divSizes[i], ACCENT);
       this.updateDiv(this.divs[i], this.divSizes[i], PRIMARY);
