@@ -1,5 +1,5 @@
 import { Sortable } from './sortable';
-import { ACCENT, PRIMARY, WARN } from './styles';
+import { ACCENT, PRIMARY, SECONDARY, WARN } from './styles';
 
 export class HeapSort extends Sortable {
   constructor(
@@ -65,7 +65,7 @@ export class HeapSort extends Sortable {
     for (i = this.divSizes.length - 1; i > 0; i--) {
       this.swap(0, i);
       this.updateDiv(this.divs[i], this.divSizes[i], ACCENT);
-      this.updateDiv(this.divs[i], this.divSizes[i], PRIMARY);
+      this.updateDiv(this.divs[i], this.divSizes[i], SECONDARY);
 
       this.maxHeapify(i, 0);
 

@@ -1,5 +1,5 @@
 import { Sortable } from './sortable';
-import { ACCENT, PRIMARY, WARN } from './styles';
+import { ACCENT, PRIMARY, SECONDARY, WARN } from './styles';
 
 export class InsertionSort extends Sortable {
   constructor(
@@ -13,7 +13,7 @@ export class InsertionSort extends Sortable {
   public insertionSort() {
     let j: number;
     for (j = 0; j < this.divSizes.length; j++) {
-      this.updateDiv(this.divs[j], this.divSizes[j], PRIMARY);
+      this.updateDiv(this.divs[j], this.divSizes[j], SECONDARY);
 
       let key = this.divSizes[j];
       let i = j - 1;
@@ -28,7 +28,7 @@ export class InsertionSort extends Sortable {
 
         this.updateDiv(this.divs[i], this.divSizes[i], PRIMARY);
         if (i === j - 1) {
-          this.updateDiv(this.divs[i + 1], this.divSizes[i + 1], PRIMARY);
+          this.updateDiv(this.divs[i + 1], this.divSizes[i + 1], SECONDARY);
         } else {
           this.updateDiv(this.divs[i + 1], this.divSizes[i + 1], PRIMARY);
         }

@@ -1,5 +1,5 @@
 import { Sortable } from './sortable';
-import { ACCENT, PRIMARY, WARN } from './styles';
+import { ACCENT, PRIMARY, SECONDARY, WARN } from './styles';
 
 export class SelectionSort extends Sortable {
   constructor(
@@ -18,7 +18,7 @@ export class SelectionSort extends Sortable {
       let minIndex: number = i;
 
       for (let j = i + 1; j < this.divSizes.length; j++) {
-        this.updateDiv(this.divs[j], this.divSizes[j], PRIMARY);
+        this.updateDiv(this.divs[j], this.divSizes[j], SECONDARY);
 
         if (this.divSizes[j] < this.divSizes[minIndex]) {
           if (minIndex !== i) {

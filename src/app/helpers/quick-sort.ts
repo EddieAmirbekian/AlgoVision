@@ -1,5 +1,5 @@
 import { Sortable } from './sortable';
-import { ACCENT, PRIMARY, WARN } from './styles';
+import { ACCENT, PRIMARY, SECONDARY, WARN } from './styles';
 
 export class QuickSort extends Sortable {
   constructor(
@@ -13,11 +13,11 @@ export class QuickSort extends Sortable {
   public quickPartition(start: number, end: number) {
     let i = start + 1;
     let piv = this.divSizes[start];
-    this.updateDiv(this.divs[start], this.divSizes[start], PRIMARY);
+    this.updateDiv(this.divs[start], this.divSizes[start], SECONDARY);
 
     for (let j = start + 1; j <= end; j++) {
       if (this.divSizes[j] < piv) {
-        this.updateDiv(this.divs[j], this.divSizes[j], PRIMARY);
+        this.updateDiv(this.divs[j], this.divSizes[j], SECONDARY);
 
         this.updateDiv(this.divs[i], this.divSizes[i], WARN);
         this.updateDiv(this.divs[j], this.divSizes[j], WARN);

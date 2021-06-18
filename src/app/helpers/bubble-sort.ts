@@ -1,5 +1,5 @@
 import { Sortable } from './sortable';
-import { ACCENT, PRIMARY, WARN } from './styles';
+import { ACCENT, PRIMARY, SECONDARY, WARN } from './styles';
 
 export class BubbleSort extends Sortable {
   constructor(
@@ -15,7 +15,7 @@ export class BubbleSort extends Sortable {
     let j: number;
     for (i = 0; i < this.divSizes.length - 1; i++) {
       for (j = 0; j < this.divSizes.length - i - 1; j++) {
-        this.updateDiv(this.divs[j], this.divSizes[j], PRIMARY);
+        this.updateDiv(this.divs[j], this.divSizes[j], SECONDARY);
 
         if (this.divSizes[j] > this.divSizes[j + 1]) {
           this.updateDiv(this.divs[j], this.divSizes[j], WARN);

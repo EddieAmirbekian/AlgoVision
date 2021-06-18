@@ -1,5 +1,5 @@
 import { Sortable } from './sortable';
-import { ACCENT, PRIMARY, WARN } from './styles';
+import { ACCENT, PRIMARY, SECONDARY, WARN } from './styles';
 
 export class MergeSort extends Sortable {
   constructor(
@@ -13,7 +13,7 @@ export class MergeSort extends Sortable {
   public mergePartition(start: number, end: number) {
     if (start < end) {
       let mid = Math.floor((start + end) / 2);
-      this.updateDiv(this.divs[mid], this.divSizes[mid], PRIMARY);
+      this.updateDiv(this.divs[mid], this.divSizes[mid], SECONDARY);
 
       this.mergePartition(start, mid);
       this.mergePartition(mid + 1, end);
@@ -46,7 +46,7 @@ export class MergeSort extends Sortable {
 
     for (let i = 0; i < k; i++) {
       this.divSizes[start++] = array[i];
-      this.updateDiv(this.divs[start - 1], this.divSizes[start - 1], ACCENT); //Color update
+      this.updateDiv(this.divs[start - 1], this.divSizes[start - 1], ACCENT);
     }
   }
 }
