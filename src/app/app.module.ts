@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import { ControlsModule } from './controls/controls.module';
+import {AvPathfinderModule} from './controls/av-pathfinder/av-pathfinder.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { ControlsModule } from './controls/controls.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     LayoutModule,
-    ControlsModule
+    ControlsModule,
+    AvPathfinderModule
   ],
   providers: [],
   bootstrap: [AppComponent]

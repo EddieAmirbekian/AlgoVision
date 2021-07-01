@@ -1,0 +1,52 @@
+.mat-list-base.inline-list {
+  display: flex;
+  padding: 0 1rem 0 1rem;
+}
+
+.node-example {
+  height: 25px;
+  width: 25px;
+  margin-left: 10px;
+}
+
+.start-node {
+  @extend .node-example;
+  background-color: #7cb342;
+}
+
+.end-node {
+  @extend .node-example;
+  background-color: #ef6c00;
+}
+
+.wall-node {
+  @extend .node-example;
+  background-color: #283593;
+}
+
+.path-node {
+  @extend .node-example;
+  background-color: #ffeb3b;
+}
+
+.unvisited-node {
+  @extend .node-example;
+  border: 1px solid #283593;
+}
+
+.visited-node__cyan {
+  @extend .node-example;
+  background-color: lightskyblue;
+}
+
+.visited-node__purple {
+  @extend .node-example;
+  background-color: indigo;
+}
+
+.main-text {
+  color: #283593;
+  font-size: medium;
+  text-align: center;
+  padding: 15px 25px 15px 25px;
+}
