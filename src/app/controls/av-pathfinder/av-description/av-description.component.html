@@ -1,25 +1,25 @@
 <mat-list class="inline-list">
   <mat-list-item>
     Start Node
-    <div class="node-example start-node"></div>
+    <av-grid-node [row]="0" [column]="0" [type]="nodeType.START"></av-grid-node>
   </mat-list-item>
   <mat-list-item>
-    Target Node
-    <div class="node-example end-node"></div>
+    End Node
+    <av-grid-node [row]="0" [column]="1" [type]="nodeType.END"></av-grid-node>
   </mat-list-item>
-  <mat-list-item>
+  <!--<mat-list-item>
     Bomb Node
     <div class="node-example bomb-node"></div>
   </mat-list-item>
   <mat-list-item>
     Weight Node
     <div class="node-example weight-node"></div>
-  </mat-list-item>
+  </mat-list-item>-->
   <mat-list-item>
     Unvisited Node
-    <div class="node-example unvisited-node"></div>
+    <av-grid-node [row]="0" [column]="2" [type]="nodeType.EMPTY"></av-grid-node>
   </mat-list-item>
-  <mat-list-item>
+  <!--<mat-list-item>
     Visited Nodes
     <div class="node-example visited-node__cyan"></div>
     <div class="node-example visited-node__purple"></div>
@@ -27,10 +27,10 @@
   <mat-list-item>
     Shortest Path Node
     <div class="node-example path-node"></div>
-  </mat-list-item>
+  </mat-list-item>-->
   <mat-list-item>
     Wall Node
-    <div class="node-example wall-node"></div>
+    <av-grid-node [row]="0" [column]="3" [type]="nodeType.WALL"></av-grid-node>
   </mat-list-item>
 </mat-list>
 <div class="main-text">

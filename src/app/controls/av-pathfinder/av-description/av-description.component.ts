@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {NodeType} from '../av-grid-node/node-type.model';
 
 @Component({
   selector: 'av-description',
@@ -12,4 +13,7 @@ export class AvDescriptionComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  public get nodeType(): typeof NodeType {
+    return NodeType;
+  }
 }

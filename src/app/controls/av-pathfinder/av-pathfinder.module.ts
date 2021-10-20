@@ -4,6 +4,7 @@ import {MaterialModule} from '../../material/material.module';
 import { AvPathfinderComponent } from './av-pathfinder.component';
 import {AvGridComponent} from './av-grid/av-grid.component';
 import { AvDescriptionComponent } from './av-description/av-description.component';
+import { AvGridNodeComponent } from './av-grid-node/av-grid-node.component';
 
 
 
@@ -11,7 +12,8 @@ import { AvDescriptionComponent } from './av-description/av-description.componen
   declarations: [
     AvGridComponent,
     AvPathfinderComponent,
-    AvDescriptionComponent
+    AvDescriptionComponent,
+    AvGridNodeComponent
   ],
   exports: [
     AvPathfinderComponent
