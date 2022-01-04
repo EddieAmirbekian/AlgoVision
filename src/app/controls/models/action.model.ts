@@ -53,7 +53,7 @@ export class ActionModel {
   }
 
   public default(): ActionModel {
-    this.color = undefined;
+    this.color = void 0;
     return this;
   }
 
