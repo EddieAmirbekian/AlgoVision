@@ -1,5 +1,6 @@
 import { Sortable } from './sortable';
 import { ACCENT, PRIMARY, SECONDARY, WARN } from './styles';
+import {ThemePalette} from '@angular/material/core';
 
 export class HeapSort extends Sortable {
   constructor(
@@ -10,45 +11,52 @@ export class HeapSort extends Sortable {
     super(divs, divSizes, speed);
   }
 
-  protected swap(i: number, j: number) {
-    this.updateDiv(this.divs[i], this.divSizes[i], WARN);
-    this.updateDiv(this.divs[j], this.divSizes[j], WARN);
-
-    let temp = this.divSizes[i];
-    this.divSizes[i] = this.divSizes[j];
-    this.divSizes[j] = temp;
-
-    this.updateDiv(this.divs[i], this.divSizes[i], WARN);
-    this.updateDiv(this.divs[j], this.divSizes[j], WARN);
-
-    this.updateDiv(this.divs[i], this.divSizes[i], PRIMARY);
-    this.updateDiv(this.divs[j], this.divSizes[j], PRIMARY);
+  protected swapDivs(i: number, j: number, color: string): void {
+    this.updateDiv(this.divs[i], this.divSizes[i], color);
+    this.updateDiv(this.divs[j], this.divSizes[j], color);
   }
 
-  protected maxHeapify(size: number, i: number) {
+  protected swapDivSizes(i: number, j: number): void {
+    const temp = this.divSizes[i];
+    this.divSizes[i] = this.divSizes[j];
+    this.divSizes[j] = temp;
+  }
+
+  protected swap(i: number, j: number): void {
+    this.swapDivs(i, j, WARN);
+    this.swapDivSizes(i, j);
+    this.swapDivs(i, j, WARN);
+    this.swapDivs(i, j, PRIMARY);
+  }
+
+  protected checkForHeapify(n: number, size: number, largest: number): boolean {
+    return n < size && this.divSizes[n] > this.divSizes[largest];
+  }
+
+  protected heapify(n: number, i: number, size: number, largest: number): number | undefined {
+    if (this.checkForHeapify(n, size, largest)) {
+      if (largest !== i) {
+        this.updateDiv(this.divs[largest], this.divSizes[largest], PRIMARY);
+      }
+
+      this.updateDiv(this.divs[largest], this.divSizes[largest], WARN);
+      return n;
+    }
+    return;
+  }
+
+  protected maxHeapify(size: number, i: number): void {
     let largest = i;
-    let l = 2 * i + 1;
-    let r = 2 * i + 2;
+    let tmp: number | undefined = 0;
+    const l = 2 * i + 1;
+    const r = 2 * i + 2;
 
-    if (l < size && this.divSizes[l] > this.divSizes[largest]) {
-      if (largest !== i) {
-        this.updateDiv(this.divs[largest], this.divSizes[largest], PRIMARY);
-      }
 
-      largest = l;
+    tmp = this.heapify(l, i, size, largest);
+    largest = tmp ? tmp : largest;
 
-      this.updateDiv(this.divs[largest], this.divSizes[largest], WARN);
-    }
-
-    if (r < size && this.divSizes[r] > this.divSizes[largest]) {
-      if (largest !== i) {
-        this.updateDiv(this.divs[largest], this.divSizes[largest], PRIMARY);
-      }
-
-      largest = r;
-
-      this.updateDiv(this.divs[largest], this.divSizes[largest], WARN);
-    }
+    tmp = this.heapify(r, i, size, largest);
+    largest = tmp ? tmp : largest;
 
     if (largest !== i) {
       this.swap(i, largest);
@@ -56,7 +64,7 @@ export class HeapSort extends Sortable {
     }
   }
 
-  public heapSort() {
+  public heapSort(): void {
     let i: number;
     for (i = Math.floor(this.divSizes.length / 2) - 1; i >= 0; i--) {
       this.maxHeapify(this.divSizes.length, i);

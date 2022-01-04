@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSliderChange } from '@angular/material/slider';
-import { Observable, of } from 'rxjs';
-import { AlgorithmService } from 'src/app/services/algorithm.service';
+import { Observable } from 'rxjs';
 import { SortingService } from 'src/app/services/sorting.service';
 
 @Component({
@@ -26,12 +25,16 @@ export class AvSorterComponent implements OnInit {
     return this.sortService.getSortSpeed();
   }
 
-  public onNumberOfItemsChange(event: MatSliderChange) {
-    event.value && this.sortService.setLength(event.value);
+  public onNumberOfItemsChange(event: MatSliderChange): void {
+    if (event.value) {
+      this.sortService.setLength(event.value);
+    }
   }
 
-  public onSpeedChange(event: MatSliderChange) {
-    event.value && this.sortService.setSpeed(event.value);
+  public onSpeedChange(event: MatSliderChange): void {
+    if (event.value) {
+      this.sortService.setSpeed(event.value);
+    }
   }
 
   public generateArray(): Observable<number[]> {

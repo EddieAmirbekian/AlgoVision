@@ -10,12 +10,12 @@ export class InsertionSort extends Sortable {
     super(divs, divSizes, speed);
   }
 
-  public insertionSort() {
+  public insertionSort(): void {
     let j: number;
     for (j = 0; j < this.divSizes.length; j++) {
       this.updateDiv(this.divs[j], this.divSizes[j], SECONDARY);
 
-      let key = this.divSizes[j];
+      const key = this.divSizes[j];
       let i = j - 1;
       while (i >= 0 && this.divSizes[i] > key) {
         this.updateDiv(this.divs[i], this.divSizes[i], WARN);

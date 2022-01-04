@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {NodeType} from './node-type.model';
+import {NodeType} from '../../models/node-type.model';
 
 @Component({
   selector: 'av-grid-node',
@@ -9,15 +9,15 @@ import {NodeType} from './node-type.model';
 export class AvGridNodeComponent implements OnInit {
 
   @Input()
-  public row: number = 0;
+  public row = 0;
 
   @Input()
-  public column: number = 0;
+  public column = 0;
 
   @Input()
   public type: NodeType = NodeType.EMPTY;
 
-  public className: string = '';
+  public className = '';
 
   constructor() { }
 

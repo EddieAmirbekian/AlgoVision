@@ -10,9 +10,15 @@ export class QuickSort extends Sortable {
     super(divs, divSizes, speed);
   }
 
-  public quickPartition(start: number, end: number) {
+  protected swapDivSizes(i: number, j: number): void {
+    const tmp = this.divSizes[i];
+    this.divSizes[i] = this.divSizes[j];
+    this.divSizes[j] = tmp;
+  }
+
+  public quickPartition(start: number, end: number): number {
     let i = start + 1;
-    let piv = this.divSizes[start];
+    const piv = this.divSizes[start];
     this.updateDiv(this.divs[start], this.divSizes[start], SECONDARY);
 
     for (let j = start + 1; j <= end; j++) {
@@ -22,9 +28,7 @@ export class QuickSort extends Sortable {
         this.updateDiv(this.divs[i], this.divSizes[i], WARN);
         this.updateDiv(this.divs[j], this.divSizes[j], WARN);
 
-        let temp = this.divSizes[i];
-        this.divSizes[i] = this.divSizes[j];
-        this.divSizes[j] = temp;
+        this.swapDivSizes(i, j);
 
         this.updateDiv(this.divs[i], this.divSizes[i], WARN);
         this.updateDiv(this.divs[j], this.divSizes[j], WARN);
@@ -38,9 +42,7 @@ export class QuickSort extends Sortable {
     this.updateDiv(this.divs[start], this.divSizes[start], WARN);
     this.updateDiv(this.divs[i - 1], this.divSizes[i - 1], WARN);
 
-    let temp = this.divSizes[start];
-    this.divSizes[start] = this.divSizes[i - 1];
-    this.divSizes[i - 1] = temp;
+    this.swapDivSizes(start, i - 1);
 
     this.updateDiv(this.divs[start], this.divSizes[start], WARN);
     this.updateDiv(this.divs[i - 1], this.divSizes[i - 1], WARN);
@@ -52,9 +54,9 @@ export class QuickSort extends Sortable {
     return i - 1;
   }
 
-  public quickSort(start: number, end: number) {
+  public quickSort(start: number, end: number): void {
     if (start < end) {
-      let pivotPos = this.quickPartition(start, end);
+      const pivotPos = this.quickPartition(start, end);
       this.quickSort(start, pivotPos - 1);
       this.quickSort(pivotPos + 1, end);
     }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AvGridNodeComponent} from '../av-grid-node/av-grid-node.component';
-import {NodeType} from '../av-grid-node/node-type.model';
+import {NodeType} from '../../models/node-type.model';
 
 @Component({
   selector: 'av-grid',

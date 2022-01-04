@@ -44,7 +44,7 @@ export class SortingService {
     return this.sortSpeed.asObservable();
   }
 
-  public setSpeed(speed: number) {
+  public setSpeed(speed: number): void {
     this.sortSpeed.next(speed);
   }
 
@@ -52,7 +52,7 @@ export class SortingService {
     this.generateArray();
   }
 
-  public sort() {
+  public sort(): void {
     const algorithm = this.algorithmService.getAlgorithm();
     switch (algorithm) {
       case Algorithm.MERGE:
@@ -78,7 +78,7 @@ export class SortingService {
     }
   }
 
-  private mergeSort(items: number[]) {
+  private mergeSort(items: number[]): void {
     const bars = document.getElementsByClassName(
       'sorter-container-item'
     ) as HTMLCollectionOf<HTMLElement>;
@@ -87,7 +87,7 @@ export class SortingService {
     mergeSortHelper.mergePartition(0, this.arrayLength.value - 1);
   }
 
-  private quickSort(items: number[]) {
+  private quickSort(items: number[]): void {
     const bars = document.getElementsByClassName(
       'sorter-container-item'
     ) as HTMLCollectionOf<HTMLElement>;
@@ -96,7 +96,7 @@ export class SortingService {
     quickSortHelper.quickSort(0, this.arrayLength.value - 1);
   }
 
-  private heapSort(items: number[]) {
+  private heapSort(items: number[]): void {
     const bars = document.getElementsByClassName(
       'sorter-container-item'
     ) as HTMLCollectionOf<HTMLElement>;
@@ -105,7 +105,7 @@ export class SortingService {
     heapSortHelper.heapSort();
   }
 
-  private bubbleSort(items: number[]) {
+  private bubbleSort(items: number[]): void {
     const bars = document.getElementsByClassName(
       'sorter-container-item'
     ) as HTMLCollectionOf<HTMLElement>;
@@ -118,7 +118,7 @@ export class SortingService {
     bubbleSortHelper.bubbleSort();
   }
 
-  private insertionSort(items: number[]) {
+  private insertionSort(items: number[]): void {
     const bars = document.getElementsByClassName(
       'sorter-container-item'
     ) as HTMLCollectionOf<HTMLElement>;
@@ -131,7 +131,7 @@ export class SortingService {
     insertionSortHelper.insertionSort();
   }
 
-  private selectionSort(items: number[]) {
+  private selectionSort(items: number[]): void {
     const bars = document.getElementsByClassName(
       'sorter-container-item'
     ) as HTMLCollectionOf<HTMLElement>;

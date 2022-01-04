@@ -7,7 +7,7 @@ export class AlgorithmService {
   public currentAlgorithm: BehaviorSubject<Algorithm> =
     new BehaviorSubject<Algorithm>(Algorithm.NONE);
 
-  public setAlgorithm(algorithm: Algorithm) {
+  public setAlgorithm(algorithm: Algorithm): void {
     this.currentAlgorithm.next(algorithm);
   }
 

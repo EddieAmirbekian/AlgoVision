@@ -10,9 +10,9 @@ export class MergeSort extends Sortable {
     super(divs, divSizes, speed);
   }
 
-  public mergePartition(start: number, end: number) {
+  public mergePartition(start: number, end: number): void {
     if (start < end) {
-      let mid = Math.floor((start + end) / 2);
+      const mid = Math.floor((start + end) / 2);
       this.updateDiv(this.divs[mid], this.divSizes[mid], SECONDARY);
 
       this.mergePartition(start, mid);
@@ -22,10 +22,10 @@ export class MergeSort extends Sortable {
     }
   }
 
-  private mergeSort(start: number, mid: number, end: number) {
-    let p = start,
-      q = mid + 1,
-      k = 0;
+  private mergeSort(start: number, mid: number, end: number): void {
+    let p = start;
+    let q = mid + 1;
+    let k = 0;
     const array: number[] = [];
 
     for (let i = start; i <= end; i++) {

@@ -1,13 +1,18 @@
+import {Algorithm} from './algorithm.enum';
+import {ThemePalette} from '@angular/material/core';
+
+type ActionFunction = () => ((algorithm: Algorithm) => void);
+
 export class ActionModel {
-  public isMenu: boolean = false;
-  public disabled: boolean = false;
-  public color: string = '';
-  public isVisible: boolean = true;
-  public isRaised: boolean = false;
+  public isMenu = false;
+  public disabled = false;
+  public color: ThemePalette;
+  public isVisible = true;
+  public isRaised = false;
   public children: ActionModel[] = [];
 
-  private actionFunc: Function | undefined;
-  private component: string = 'action';
+  private actionFunc: ActionFunction | undefined;
+  private component = 'action';
 
   public id: string;
 
@@ -16,55 +21,57 @@ export class ActionModel {
       this.component + '-' + this.title.replace('.', '-').replace('_', '-');
   }
 
-  public click() {
-    this.actionFunc && this.actionFunc();
+  public click(): void {
+    if (this.actionFunc) {
+      this.actionFunc();
+    }
   }
 
-  public button() {
+  public button(): ActionModel {
     this.isMenu = false;
     return this;
   }
 
-  public raised() {
+  public raised(): ActionModel {
     this.isRaised = true;
     return this;
   }
 
-  public primary() {
+  public primary(): ActionModel {
     this.color = 'primary';
     return this;
   }
 
-  public accent() {
+  public accent(): ActionModel {
     this.color = 'accent';
     return this;
   }
 
-  public visible() {
+  public visible(): ActionModel {
     this.isVisible = true;
     return this;
   }
 
-  public default() {
-    this.color = 'default';
+  public default(): ActionModel {
+    this.color = undefined;
     return this;
   }
 
-  public menu() {
+  public menu(): ActionModel {
     this.isMenu = true;
     return this;
   }
 
-  public setDisabled(disabled: boolean) {
+  public setDisabled(disabled: boolean): void {
     this.disabled = disabled;
   }
 
-  public subscribe(action: any) {
+  public subscribe(action: any): ActionModel {
     this.actionFunc = action;
     return this;
   }
 
-  public addChild(action: ActionModel) {
+  public addChild(action: ActionModel): ActionModel {
     if (this.isMenu) {
       this.children.push(action);
     }

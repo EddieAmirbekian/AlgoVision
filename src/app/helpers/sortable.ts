@@ -12,7 +12,7 @@ export class Sortable {
     this.delayTime = 10000 / (Math.floor(this.divSizes.length / 10) * sp);
   }
 
-  protected updateDiv(container: HTMLElement, height: number, color: string) {
+  protected updateDiv(container: HTMLElement, height: number, color: string): void {
     window.setTimeout(() => {
       container.style.height = height + 'px';
       container.style.backgroundColor = color;

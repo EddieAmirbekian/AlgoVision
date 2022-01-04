@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { ActionService } from './services/action.service';
 
 @Component({
-  selector: 'app-root',
+  selector: 'av-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })

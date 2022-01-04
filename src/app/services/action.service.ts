@@ -7,11 +7,16 @@ import { SortingService } from './sorting.service';
 
 @Injectable()
 export class ActionService {
+
+  constructor(
+    private algorithmService: AlgorithmService,
+    private sortingService: SortingService
+  ) {}
   private pathFindingActions: ActionModel[] = [
     new ActionModel('Algorithms')
       .menu()
       .addChild(
-        new ActionModel("Dijkstra's Algorithm").button().subscribe(() => {
+        new ActionModel('Dijkstra\'s Algorithm').button().subscribe(() => {
           this.setAlgorithm(Algorithm.DIJKSTRA);
         })
       )
@@ -82,10 +87,9 @@ export class ActionService {
       }),
   ];
 
-  constructor(
-    private algorithmService: AlgorithmService,
-    private sortingService: SortingService
-  ) {}
+  public isPathFinding: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    true
+  );
 
   private getPathFindingActions(): Observable<ActionModel[]> {
     return of(this.pathFindingActions);
@@ -94,10 +98,6 @@ export class ActionService {
   private getSortingActions(): Observable<ActionModel[]> {
     return of(this.sortingActions);
   }
-
-  public isPathFinding: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
-    true
-  );
 
   public getActions(): Observable<ActionModel[]> {
     if (this.isPathFinding.value) {

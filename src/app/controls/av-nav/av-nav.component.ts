@@ -10,11 +10,9 @@ import { Algorithm } from '../models/algorithm.enum';
   styleUrls: ['./av-nav.component.scss'],
 })
 export class AvNavComponent {
-  public selectedAlgorithm: Algorithm = Algorithm.NONE;
-
   constructor(private actionService: ActionService) {}
 
-  public setActions(actionsType: 'pathfinding' | 'sorting') {
+  public setActions(actionsType: 'pathfinding' | 'sorting'): void {
     const bool = actionsType === 'pathfinding';
     this.actionService.isPathFinding.next(bool);
   }

@@ -10,7 +10,7 @@ export class SelectionSort extends Sortable {
     super(divs, divSizes, speed);
   }
 
-  public selectionSort() {
+  public selectionSort(): void {
     let i: number;
     for (i = 0; i < this.divSizes.length - 1; i++) {
       this.updateDiv(this.divs[i], this.divSizes[i], WARN);
@@ -36,7 +36,7 @@ export class SelectionSort extends Sortable {
       }
 
       if (minIndex !== i) {
-        let temp = this.divSizes[minIndex];
+        const temp = this.divSizes[minIndex];
         this.divSizes[minIndex] = this.divSizes[i];
         this.divSizes[i] = temp;
 
