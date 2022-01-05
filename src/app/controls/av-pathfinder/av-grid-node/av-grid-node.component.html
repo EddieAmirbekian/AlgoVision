@@ -1,4 +1,8 @@
 <div
   [id]="'node' + row + '-' + column"
-  [class]="'node ' + className">
+  [class]="'node ' + className"
+  (click)="onClick()"
+  (mousedown)="onMouseDown($event)"
+  (mouseout)="onMouseEnter($event)"
+  (mouseup)="onMouseUp($event)">
 </div>

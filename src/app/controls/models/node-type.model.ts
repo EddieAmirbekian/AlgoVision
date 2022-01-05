@@ -2,8 +2,10 @@ export enum NodeType {
   EMPTY = 0,
   START = 1,
   END = 2,
-  WALL = 3,
-  WEIGHT = 4
+  POINT = 3,
+  WALL = 4,
+  WEIGHT = 5,
+  PATH = 6
 }
 
 export type Grid = NodeType[][];

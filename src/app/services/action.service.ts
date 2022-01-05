@@ -37,13 +37,16 @@ export class ActionService {
           this.setAlgorithm(Algorithm.DFS);
         })
       ),
-    new ActionModel('Add Point').button(),
+    new ActionModel('Add Point').button().subscribe(() => {
+      this.gridService.addPoint();
+    }),
     new ActionModel('Generate Maze').button().subscribe(() => {
       this.gridService.generateMaze();
-      this.gridService.mazeGenerationAnimations();
     }),
     new ActionModel('Visualize!').accent().raised().button(),
-    new ActionModel('Clear Board').button(),
+    new ActionModel('Clear Board').button().subscribe(() => {
+      this.gridService.clearAll();
+    }),
     new ActionModel('Clear Walls and Weights').button().subscribe(() => {
       this.gridService.clearWallsAndWeights();
     }),
