@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NodeType} from '../../models/node-type.model';
+import {GridService} from '../../../services/grid.service';
 
 @Component({
   selector: 'av-grid-node',
@@ -19,7 +20,7 @@ export class AvGridNodeComponent implements OnInit {
 
   public className = '';
 
-  constructor() { }
+  constructor(private gridService: GridService) { }
 
   ngOnInit(): void {
     switch (this.type) {
@@ -33,17 +34,4 @@ export class AvGridNodeComponent implements OnInit {
         this.className = 'node-wall';
     }
   }
-
-  public onMouseDown(event: any): void {
-
-  }
-
-  public onMouseEnter(event: any): void {
-
-  }
-
-  public onMouseUp(event: any): void {
-
-  }
-
 }

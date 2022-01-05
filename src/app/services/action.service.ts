@@ -4,12 +4,14 @@ import { ActionModel } from '../controls/models/action.model';
 import { Algorithm } from '../controls/models/algorithm.enum';
 import { AlgorithmService } from './algorithm.service';
 import { SortingService } from './sorting.service';
+import {GridService} from './grid.service';
 
 @Injectable()
 export class ActionService {
 
   constructor(
     private algorithmService: AlgorithmService,
+    private gridService: GridService,
     private sortingService: SortingService
   ) {}
   private pathFindingActions: ActionModel[] = [
@@ -35,11 +37,22 @@ export class ActionService {
           this.setAlgorithm(Algorithm.DFS);
         })
       ),
-    new ActionModel('Add Bomb').button(),
+    new ActionModel('Add Point').button(),
+    new ActionModel('Generate Maze').button().subscribe(() => {
+      this.gridService.generateMaze();
+      this.gridService.mazeGenerationAnimations();
+    }),
     new ActionModel('Visualize!').accent().raised().button(),
     new ActionModel('Clear Board').button(),
-    new ActionModel('Clear Walls and Weights'),
+    new ActionModel('Clear Walls and Weights').button().subscribe(() => {
+      this.gridService.clearWallsAndWeights();
+    }),
     new ActionModel('Clear Path'),
+    new ActionModel('Speed')
+      .menu()
+      .addChild(new ActionModel('Fast').subscribe(() => this.gridService.changeSpeed('fast')))
+      .addChild(new ActionModel('Average').subscribe(() => this.gridService.changeSpeed('average')))
+      .addChild(new ActionModel('Slow').subscribe(() => this.gridService.changeSpeed('slow')))
   ];
 
   private sortingActions: ActionModel[] = [
