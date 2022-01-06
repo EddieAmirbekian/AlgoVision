@@ -11,9 +11,9 @@ type Point = Pair<number, number>;
 export class GridService {
   public readonly rowsCount = 21;
   public readonly colsCount = 59;
-  public readonly startNode: Point = new Pair(10, 6);
-  public readonly endNode: Point = new Pair(10, 52);
 
+  public startNode: Point = new Pair(10, 6);
+  public endNode: Point = new Pair(10, 52);
   public nodes: Grid = [];
   public isMovingPoint = false;
   public isMouseDown = false;
@@ -66,7 +66,12 @@ export class GridService {
       y = Math.floor(Math.random() * this.colsCount);
     }
     this.nodes[x][y] = NodeType.POINT;
+    this.objects.push(new Pair(new Pair(x, y), NodeType.POINT));
     return new Pair(x, y);
+  }
+
+  public addWeight(): void {
+
   }
 
   public movePoint(from: Point, to: Point): void {
@@ -74,6 +79,11 @@ export class GridService {
       const type = this.nodes[from.first][from.second];
       this.nodes[to.first][to.second] = type;
       this.nodes[from.first][from.second] = NodeType.EMPTY;
+      if (type === NodeType.START) {
+        this.startNode = to;
+      } else if (type === NodeType.END) {
+        this.endNode = to;
+      }
       this.eventBus$.next(new Pair(to, type));
     }
   }
@@ -102,6 +112,7 @@ export class GridService {
         }
       }
     }
+    this.objects = [];
   }
 
   private recursiveDivisionMaze(

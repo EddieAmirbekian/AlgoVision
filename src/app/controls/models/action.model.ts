@@ -47,6 +47,11 @@ export class ActionModel {
     return this;
   }
 
+  public warn(): ActionModel {
+    this.color = 'warn';
+    return this;
+  }
+
   public visible(): ActionModel {
     this.isVisible = true;
     return this;

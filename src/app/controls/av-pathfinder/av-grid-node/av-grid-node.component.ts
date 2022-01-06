@@ -33,6 +33,13 @@ export class AvGridNodeComponent implements OnInit {
         break;
       case NodeType.WALL:
         this.className = 'node-wall';
+        break;
+      case NodeType.POINT:
+        this.className = 'node-point';
+        break;
+      case NodeType.WEIGHT:
+        this.className = 'node-weight';
+        break;
     }
   }
 
@@ -47,9 +54,7 @@ export class AvGridNodeComponent implements OnInit {
 
   public onMouseDown(event: MouseEvent): void {
     event.stopPropagation();
-    if (
-      this.type !== NodeType.START && this.type !== NodeType.END && !this.gridService.isMovingPoint
-    ) {
+    if (this.canDoWall() && !this.gridService.isMovingPoint) {
       this.gridService.isMouseDown = true;
       this.gridService.putWall(this.row, this.column);
     }
@@ -57,18 +62,18 @@ export class AvGridNodeComponent implements OnInit {
 
   public onMouseEnter(event: MouseEvent): void {
     event.stopPropagation();
-    if (
-      this.gridService.isMouseDown
-      && this.type !== NodeType.START
-      && this.type !== NodeType.END
-    ) {
+    if (this.gridService.isMouseDown && this.canDoWall()) {
       this.gridService.putWall(this.row, this.column);
     }
   }
 
-  public onMouseUp(event: MouseEvent): void {
+  public onMouseUp(): void {
     if (this.gridService.isMouseDown) {
       this.gridService.isMouseDown = false;
     }
+  }
+
+  private canDoWall(): boolean {
+    return this.type === NodeType.EMPTY || this.type === NodeType.WALL;
   }
 }

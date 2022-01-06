@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Algorithm } from '../controls/models/algorithm.enum';
-import { BubbleSort } from '../helpers/bubble-sort';
-import { HeapSort } from '../helpers/heap-sort';
-import { InsertionSort } from '../helpers/insertion-sort';
-import { MergeSort } from '../helpers/merge-sort';
-import { QuickSort } from '../helpers/quick-sort';
-import { SelectionSort } from '../helpers/selection-sort';
+import { BubbleSort } from '../helpers/sorting/bubble-sort';
+import { HeapSort } from '../helpers/sorting/heap-sort';
+import { InsertionSort } from '../helpers/sorting/insertion-sort';
+import { MergeSort } from '../helpers/sorting/merge-sort';
+import { QuickSort } from '../helpers/sorting/quick-sort';
+import { SelectionSort } from '../helpers/sorting/selection-sort';
 import { AlgorithmService } from './algorithm.service';
 
 @Injectable()

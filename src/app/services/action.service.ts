@@ -40,10 +40,13 @@ export class ActionService {
     new ActionModel('Add Point').button().subscribe(() => {
       this.gridService.addPoint();
     }),
+    new ActionModel('Add Weight').button().subscribe(() => {
+      this.gridService.addWeight();
+    }),
     new ActionModel('Generate Maze').button().subscribe(() => {
       this.gridService.generateMaze();
     }),
-    new ActionModel('Visualize!').accent().raised().button(),
+    new ActionModel('Visualize!').warn().raised().button(),
     new ActionModel('Clear Board').button().subscribe(() => {
       this.gridService.clearAll();
     }),

@@ -1,5 +1,5 @@
 import { Sortable } from './sortable';
-import { ACCENT, PRIMARY, SECONDARY, WARN } from './styles';
+import { ACCENT, PRIMARY, SECONDARY, WARN } from '../styles';
 
 export class InsertionSort extends Sortable {
   constructor(
