@@ -1,25 +1,35 @@
-import {Pair} from 'tstl';
-import {PathfinderNode} from '../../models/pathfinder-node.model';
-
-type Point = Pair<number, number>;
+import {Point} from '../../models/point';
+import {Node} from '../../models/node.model';
+import {NodeType} from '../../models/node-type.model';
 
 export class Pathfinder {
-  public closestNode(nodes: Array<PathfinderNode>, unvisitedNodes: Array<PathfinderNode>): Point {
-    let currentClosest: PathfinderNode | undefined;
-    let index: number | undefined;
-    for (let i = 0; i < unvisitedNodes.length; i++) {
-      const node = nodes.find((point: PathfinderNode) => unvisitedNodes[i].equals(point)) || PathfinderNode.EMPTY;
-      if (!currentClosest || currentClosest.totalDistance > node.totalDistance) {
-        currentClosest = node;
-        index = i;
-      } else if (currentClosest.totalDistance === node.totalDistance) {
-        if (currentClosest.heuristicDistance > node.heuristicDistance) {
-          currentClosest = node;
-          index = i;
-        }
+  public getNeighbors(pos: Point, nodes: Node[][]): Node[] {
+    const neighbors = [] as Node[];
+    let potentialNeighbor;
+    if (nodes[pos.x - 1] && nodes[pos.x - 1][pos.y]) {
+      potentialNeighbor = new Point(pos.x - 1, pos.y);
+      if (nodes[potentialNeighbor.x][potentialNeighbor.y].type !== NodeType.WALL) {
+        neighbors.push(nodes[potentialNeighbor.x][potentialNeighbor.y]);
       }
     }
-    unvisitedNodes.splice(index || 0, 1);
-    return new Pair(currentClosest?.row || -1, currentClosest?.col || -1);
+    if (nodes[pos.x + 1] && nodes[pos.x + 1][pos.y]) {
+      potentialNeighbor = new Point(pos.x + 1, pos.y);
+      if (nodes[potentialNeighbor.x][potentialNeighbor.y].type !== NodeType.WALL) {
+        neighbors.push(nodes[potentialNeighbor.x][potentialNeighbor.y]);
+      }
+    }
+    if (nodes[pos.x][pos.y - 1]) {
+      potentialNeighbor = new Point(pos.x, pos.y - 1);
+      if (nodes[potentialNeighbor.x][potentialNeighbor.y].type !== NodeType.WALL) {
+        neighbors.push(nodes[potentialNeighbor.x][potentialNeighbor.y]);
+      }
+    }
+    if (nodes[pos.x][pos.y + 1]) {
+      potentialNeighbor = new Point(pos.x, pos.y + 1);
+      if (nodes[potentialNeighbor.x][potentialNeighbor.y + 1].type !== NodeType.WALL) {
+        neighbors.push(nodes[potentialNeighbor.x][potentialNeighbor.y]);
+      }
+    }
+    return neighbors;
   }
 }

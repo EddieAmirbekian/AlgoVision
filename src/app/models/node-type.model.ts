@@ -5,5 +5,6 @@ export enum NodeType {
   POINT = 3,
   WALL = 4,
   WEIGHT = 5,
-  PATH = 6
+  VISITED = 6,
+  PATH = 7
 }

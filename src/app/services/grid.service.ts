@@ -3,6 +3,10 @@ import {BehaviorSubject} from 'rxjs';
 import {Node} from '../models/node.model';
 import {Point} from '../models/point';
 import {NodeType} from '../models/node-type.model';
+import {Astar} from '../helpers/pathfinding/astar';
+import {BFS} from '../helpers/pathfinding/bfs';
+import {DFS} from '../helpers/pathfinding/dfs';
+import {Dijkstra} from '../helpers/pathfinding/dijkstra';
 
 type Orientation = 'horizontal' | 'vertical';
 type Speed = 'fast' | 'average' | 'slow';
@@ -116,6 +120,28 @@ export class GridService {
   public generateMaze(): void {
     this.recursiveDivisionMaze(2, this.rowsCount - 3, 2, this.colsCount - 3, 'horizontal', false);
     this.mazeGenerationAnimations();
+  }
+
+  // search algorithms part
+
+  public astar(): void {
+    const astarHelper = new Astar();
+    astarHelper.astar();
+  }
+
+  public bfs(): void {
+    const bfsHelper = new BFS();
+    bfsHelper.bfs();
+  }
+
+  public dfs(): void {
+    const dfsHelper = new DFS();
+    dfsHelper.dfs();
+  }
+
+  public dijkstra(): void {
+    const dijkstraHelper = new Dijkstra();
+    dijkstraHelper.dijkstra();
   }
 
   private updateNodeType(pos: Point, type: NodeType): void {
