@@ -1,7 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import {AvPathfinderComponent} from './controls/av-pathfinder/av-pathfinder.component';
+import {AvSorterComponent} from './controls/av-sorter/av-sorter.component';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {path: '', component: AvPathfinderComponent},
+  {path: 'pathfinder', component: AvPathfinderComponent},
+  {path: 'sorter', component: AvSorterComponent}
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

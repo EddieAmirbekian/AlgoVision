@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ActionModel } from '../models/action.model';
+import { ActionModel } from '../../models/action.model';
 import { ActionService } from 'src/app/services/action.service';
-import { Algorithm } from '../models/algorithm.enum';
+import { Algorithm } from '../../models/algorithm.enum';
 
 @Component({
   selector: 'av-nav',

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Algorithm } from '../controls/models/algorithm.enum';
+import { Algorithm } from '../models/algorithm.enum';
 import { BubbleSort } from '../helpers/sorting/bubble-sort';
 import { HeapSort } from '../helpers/sorting/heap-sort';
 import { InsertionSort } from '../helpers/sorting/insertion-sort';

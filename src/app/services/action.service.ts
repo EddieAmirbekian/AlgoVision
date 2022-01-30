@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { of, Observable, BehaviorSubject } from 'rxjs';
-import { ActionModel } from '../controls/models/action.model';
-import { Algorithm } from '../controls/models/algorithm.enum';
+import { ActionModel } from '../models/action.model';
+import { Algorithm } from '../models/algorithm.enum';
 import { AlgorithmService } from './algorithm.service';
 import { SortingService } from './sorting.service';
 import {GridService} from './grid.service';

@@ -1,48 +1,116 @@
 import {Injectable} from '@angular/core';
-import {Grid, NodeType} from '../controls/models/node-type.model';
-import {Subject} from 'rxjs';
-import {Pair} from 'tstl';
+import {BehaviorSubject} from 'rxjs';
+import {Node} from '../models/node.model';
+import {Point} from '../models/point';
+import {NodeType} from '../models/node-type.model';
 
 type Orientation = 'horizontal' | 'vertical';
 type Speed = 'fast' | 'average' | 'slow';
-type Point = Pair<number, number>;
 
 @Injectable()
 export class GridService {
+  private NODES: Node[][] = [];
+  private speed: Speed = 'average';
+  private wallsToAnimate: Array<Point> = [];
+  private objects: Array<Node> = [];
+  private prevPos: Point = new Point(-1, -1);
+  private hasPointPut = false;
+
   public readonly rowsCount = 21;
   public readonly colsCount = 59;
 
-  public startNode: Point = new Pair(10, 6);
-  public endNode: Point = new Pair(10, 52);
-  public nodes: Grid = [];
-  public isMovingPoint = false;
-  public isMouseDown = false;
-  public eventBus$: Subject<Pair<Point, NodeType>> = new Subject<Pair<Point, NodeType>>();
+  public startNodePos: Point = new Point(10, 6);
+  public endNodePos: Point = new Point(10, 52);
+  public nodes: BehaviorSubject<Node[][]> = new BehaviorSubject<Node[][]>([]);
 
-  private speed: Speed = 'average';
-  private wallsToAnimate: Array<Pair<number, number>> = [];
-  private objects: Array<Pair<Point, NodeType>> = [];
-  private prevPos: Point = new Pair(-1, -1);
+  public isMouseDown = false;
+  public isMovingPoint = false;
 
   constructor() {
     for (let i = 0; i < this.rowsCount; i++) {
-      const row = [];
+      const row = [] as Node[];
       for (let j = 0; j < this.colsCount; j++) {
-        if (this.startNode.equals(new Pair(i, j))) {
-          row.push(NodeType.START);
-        } else if (this.endNode.equals(new Pair(i, j))) {
-          row.push(NodeType.END);
+        const point = new Point(i, j);
+        if (point.equals(this.startNodePos)) {
+          row.push({position: point, type: NodeType.START} as Node);
+        } else if (point.equals(this.endNodePos)) {
+          row.push({position: point, type: NodeType.END} as Node);
         } else {
-          row.push(NodeType.EMPTY);
+          row.push({position: point, type: NodeType.EMPTY} as Node);
         }
       }
-      this.nodes.push(row);
+      this.NODES.push(row);
+    }
+    this.nodes.next(this.NODES);
+  }
+
+  public setPrevPos(pos: Point): void {
+    this.prevPos = pos;
+  }
+
+  public getPrevPos(): Point {
+    return this.prevPos;
+  }
+
+  public addPoint(): void {
+    if (!this.hasPointPut) {
+      this.hasPointPut = true;
+      let pos = Point.random(this.rowsCount, this.colsCount);
+      while (pos.equals(this.startNodePos) || pos.equals(this.endNodePos)) {
+        pos = Point.random(this.rowsCount, this.colsCount);
+      }
+      this.updateNodeType(pos, NodeType.POINT);
     }
   }
 
-  public resetBooleans(): void {
-    this.isMovingPoint = false;
-    this.isMouseDown = false;
+  public movePoint(from: Point, to: Point): void {
+    if (!from.equals(new Point(-1, -1)) && this.NODES[to.x][to.y].type !== NodeType.WALL) {
+      const type = this.NODES[from.x][from.y].type;
+      this.NODES[to.x][to.y].type = type;
+      this.NODES[from.x][from.y].type = NodeType.EMPTY;
+      if (type === NodeType.START) {
+        this.startNodePos = to;
+      } else if (type === NodeType.END) {
+        this.endNodePos = to;
+      }
+      this.nodes.next(this.NODES);
+    }
+  }
+
+  public addWeight(): void {
+    throw new Error('Not implemented.');
+  }
+
+  public doWall(pos: Point): void {
+    if (this.NODES[pos.x][pos.y].type === NodeType.WALL) {
+      this.updateNodeType(pos, NodeType.EMPTY);
+    } else if (this.NODES[pos.x][pos.y].type === NodeType.EMPTY) {
+      this.updateNodeType(pos, NodeType.WALL);
+    }
+  }
+
+  public clearWallsAndWeights(): void {
+    for (let i = 0; i < this.rowsCount; i++) {
+      for (let j = 0; j < this.colsCount; j++) {
+        if (this.NODES[i][j].type === NodeType.WALL || this.NODES[i][j].type === NodeType.WEIGHT) {
+          this.NODES[i][j].type = NodeType.EMPTY;
+        }
+      }
+    }
+    this.nodes.next(this.NODES);
+  }
+
+  public clearAll(): void {
+    for (let i = 0; i < this.rowsCount; i++) {
+      for (let j = 0; j < this.colsCount; j++) {
+        if (this.NODES[i][j].type !== NodeType.START && this.NODES[i][j].type !== NodeType.END) {
+          this.NODES[i][j].type = NodeType.EMPTY;
+        }
+      }
+    }
+    this.objects = [];
+    this.hasPointPut = false;
+    this.nodes.next(this.NODES);
   }
 
   public generateMaze(): void {
@@ -50,69 +118,9 @@ export class GridService {
     this.mazeGenerationAnimations();
   }
 
-  public setPrevPos(x: number, y: number): void {
-    this.prevPos = new Pair(x, y);
-  }
-
-  public getPrevPos(): Point {
-    return this.prevPos;
-  }
-
-  public addPoint(): Point {
-    let x = Math.floor(Math.random() * this.rowsCount);
-    let y = Math.floor(Math.random() * this.colsCount);
-    while (this.nodes[x][y] !== NodeType.EMPTY) {
-      x = Math.floor(Math.random() * this.rowsCount);
-      y = Math.floor(Math.random() * this.colsCount);
-    }
-    this.nodes[x][y] = NodeType.POINT;
-    this.objects.push(new Pair(new Pair(x, y), NodeType.POINT));
-    return new Pair(x, y);
-  }
-
-  public addWeight(): void {
-
-  }
-
-  public movePoint(from: Point, to: Point): void {
-    if (!from.equals(new Pair(-1, -1)) && this.nodes[to.first][to.second] !== NodeType.WALL) {
-      const type = this.nodes[from.first][from.second];
-      this.nodes[to.first][to.second] = type;
-      this.nodes[from.first][from.second] = NodeType.EMPTY;
-      if (type === NodeType.START) {
-        this.startNode = to;
-      } else if (type === NodeType.END) {
-        this.endNode = to;
-      }
-      this.eventBus$.next(new Pair(to, type));
-    }
-  }
-
-  public putWall(x: number, y: number): void {
-    const node = this.nodes[x][y];
-    this.nodes[x][y] = node === NodeType.EMPTY ? NodeType.WALL : NodeType.EMPTY;
-    this.eventBus$.next(new Pair(new Pair(x, y), this.nodes[x][y]));
-  }
-
-  public clearWallsAndWeights(): void {
-    for (let i = 0; i < this.rowsCount; i++) {
-      for (let j = 0; j < this.colsCount; j++) {
-        if (this.nodes[i][j] === NodeType.WALL || this.nodes[i][j] === NodeType.WEIGHT) {
-          this.nodes[i][j] = NodeType.EMPTY;
-        }
-      }
-    }
-  }
-
-  public clearAll(): void {
-    for (let i = 0; i < this.rowsCount; i++) {
-      for (let j = 0; j < this.colsCount; j++) {
-        if (this.nodes[i][j] !== NodeType.START && this.nodes[i][j] !== NodeType.END) {
-          this.nodes[i][j] = NodeType.EMPTY;
-        }
-      }
-    }
-    this.objects = [];
+  private updateNodeType(pos: Point, type: NodeType): void {
+    this.NODES[pos.x][pos.y].type = type;
+    this.nodes.next(this.NODES);
   }
 
   private recursiveDivisionMaze(
@@ -127,15 +135,15 @@ export class GridService {
       return;
     }
     if (!surroundingWalls) {
-      const relevantIds = [this.startNode, this.endNode];
+      const relevantIds = [this.startNodePos, this.endNodePos];
       if (this.objects) {
-        relevantIds.push(...this.objects.map((value: Pair<Pair<number, number>, NodeType>) => value.first));
+        relevantIds.push(...this.objects.map((value: Node) => value.position));
       }
       for (let i = 0; i < this.rowsCount; i++) {
         for (let j = 0; j < this.colsCount; j++) {
-          if (!relevantIds.includes(new Pair(i, j))) {
+          if (!relevantIds.includes(new Point(i, j))) {
             if (i === 0 || j === 0 || i === this.rowsCount - 1 || j === this.colsCount - 1) {
-              this.wallsToAnimate.push(new Pair(i, j));
+              this.wallsToAnimate.push(new Point(i, j));
             }
           }
         }
@@ -158,8 +166,8 @@ export class GridService {
       for (let i = 0; i < this.rowsCount; i++) {
         for (let j = 0; j < this.colsCount; j++) {
           if (i === currentRow && j !== colRandom && j >= colStart - 1 && j <= colEnd + 1) {
-            if (this.nodes[i][j] === NodeType.EMPTY) {
-              this.wallsToAnimate.push(new Pair(i, j));
+            if (this.NODES[i][j].type === NodeType.EMPTY) {
+              this.wallsToAnimate.push(new Point(i, j));
             }
           }
         }
@@ -190,8 +198,8 @@ export class GridService {
       for (let i = 0; i < this.rowsCount; i++) {
         for (let j = 0; j < this.colsCount; j++) {
           if (j === currentCol && i !== rowRandom && i >= rowStart - 1 && i <= rowEnd + 1) {
-            if (this.nodes[i][j] === NodeType.EMPTY) {
-              this.wallsToAnimate.push(new Pair(i, j));
+            if (this.NODES[i][j].type === NodeType.EMPTY) {
+              this.wallsToAnimate.push(new Point(i, j));
             }
           }
         }
@@ -209,13 +217,13 @@ export class GridService {
     }
   }
 
-  private timeout(nodes: Array<Pair<number, number>>, speed: number, index: number): void {
+  private timeout(nodes: Array<Point>, speed: number, index: number): void {
     setTimeout(() => {
       if (index === nodes.length) {
         this.wallsToAnimate = [];
         return;
       }
-      this.nodes[nodes[index].first][nodes[index].second] = NodeType.WALL;
+      this.updateNodeType(nodes[index], NodeType.WALL);
       this.timeout(nodes, speed, index + 1);
     }, speed);
   }

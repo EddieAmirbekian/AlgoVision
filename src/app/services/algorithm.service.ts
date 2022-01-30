@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Algorithm } from '../controls/models/algorithm.enum';
+import { Algorithm } from '../models/algorithm.enum';
 
 @Injectable()
 export class AlgorithmService {

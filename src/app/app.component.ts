@@ -13,9 +13,8 @@ export class AppComponent {
 
   constructor(private actionService: ActionService) {}
 
-  public get isSorting(): Observable<boolean> {
+  public get isPathFinding(): Observable<boolean> {
     return this.actionService.isPathFinding
-      .asObservable()
-      .pipe(map((value: boolean) => !value));
+      .asObservable();
   }
 }

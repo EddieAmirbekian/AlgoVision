@@ -1,36 +1,7 @@
 <mat-list class="inline-list">
-  <mat-list-item>
-    Start Node
-    <av-grid-node [row]="0" [column]="0" [type]="nodeType.START"></av-grid-node>
-  </mat-list-item>
-  <mat-list-item>
-    End Node
-    <av-grid-node [row]="0" [column]="1" [type]="nodeType.END"></av-grid-node>
-  </mat-list-item>
-  <mat-list-item>
-    Point Node
-    <av-grid-node [row]="0" [column]="2" [type]="nodeType.POINT"></av-grid-node>
-  </mat-list-item>
-  <mat-list-item>
-    Weight Node
-    <av-grid-node [row]="0" [column]="3" [type]="nodeType.WEIGHT"></av-grid-node>
-  </mat-list-item>
-  <mat-list-item>
-    Unvisited Node
-    <av-grid-node [row]="0" [column]="4" [type]="nodeType.EMPTY"></av-grid-node>
-  </mat-list-item>
-  <!--<mat-list-item>
-    Visited Nodes
-    <div class="node-example visited-node__cyan"></div>
-    <div class="node-example visited-node__purple"></div>
-  </mat-list-item>
-  <mat-list-item>
-    Shortest Path Node
-    <div class="node-example path-node"></div>
-  </mat-list-item>-->
-  <mat-list-item>
-    Wall Node
-    <av-grid-node [row]="0" [column]="3" [type]="nodeType.WALL"></av-grid-node>
+  <mat-list-item *ngFor="let item of listItems">
+    {{item.name}}
+    <av-grid-node [node]="item.node"></av-grid-node>
   </mat-list-item>
 </mat-list>
 <div class="main-text">

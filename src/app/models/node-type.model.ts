@@ -7,5 +7,3 @@ export enum NodeType {
   WEIGHT = 5,
   PATH = 6
 }
-
-export type Grid = NodeType[][];

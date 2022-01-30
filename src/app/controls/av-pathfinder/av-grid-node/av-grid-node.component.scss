@@ -23,6 +23,10 @@
   background-color: #009676;
 }
 
+.node-wall {
+  background-color: #283593;
+}
+
 .node-visited {
   animation-name: visitedAnimation;
   animation-duration: 1.5s;
@@ -54,10 +58,6 @@
     transform: scale(1);
     background-color: rgba(0, 190, 218, 0.75);
   }
-}
-
-.node-wall {
-  background-color: #283593;
 }
 
 .node-shortest-path {

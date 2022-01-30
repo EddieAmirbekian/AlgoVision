@@ -1,8 +1,5 @@
-<div class='app-container' [ngClass]="{'light-theme': (isSorting | async) === false, 'dark-theme': (isSorting | async)}">
+<div class='app-container' [ngClass]="{'light-theme': (isPathFinding | async), 'dark-theme': (isPathFinding | async) === false}">
     <av-nav>
-        <av-sorter *ngIf="isSorting | async; else isPathFinder"></av-sorter>
-        <ng-template #isPathFinder>
-            <av-pathfinder></av-pathfinder>
-        </ng-template>
+        <router-outlet></router-outlet>
     </av-nav>
 </div>
