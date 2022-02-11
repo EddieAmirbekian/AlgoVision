@@ -46,7 +46,9 @@ export class ActionService {
     new ActionModel('Generate Maze').button().subscribe(() => {
       this.gridService.generateMaze();
     }),
-    new ActionModel('Visualize!').warn().raised().button(),
+    new ActionModel('Visualize!').warn().raised().button().subscribe(() => {
+      this.visualize();
+    }),
     new ActionModel('Clear Board').button().subscribe(() => {
       this.gridService.clearAll();
     }),
@@ -132,5 +134,9 @@ export class ActionService {
 
   public sort(): void {
     this.sortingService.sort();
+  }
+
+  public visualize(): void {
+    this.gridService.visualize();
   }
 }

@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Node} from '../../../models/node.model';
 import {NodeType} from '../../../models/node-type.model';
 import {GridService} from '../../../services/grid.service';
+import {Point} from '../../../models/point';
 
 @Component({
   selector: 'av-grid-node',
@@ -28,7 +29,7 @@ export class AvGridNodeComponent implements OnInit {
   public ngOnInit(): void {
     this.setClassName();
     this.gridService.nodes.asObservable().subscribe((nodes: Node[][]) => {
-      this.node.type = nodes[this.row][this.column].type;
+      this.node.type = this.gridService.getNodeByPos(new Point(this.row, this.column)).type;
       this.setClassName();
     });
   }
@@ -84,6 +85,12 @@ export class AvGridNodeComponent implements OnInit {
           break;
         case NodeType.WEIGHT:
           this.className = 'node-weight';
+          break;
+        case NodeType.VISITED:
+          this.className = 'node-visited';
+          break;
+        case NodeType.PATH:
+          this.className = 'node-path';
           break;
         default:
           this.className = '';

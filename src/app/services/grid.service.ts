@@ -3,10 +3,9 @@ import {BehaviorSubject} from 'rxjs';
 import {Node} from '../models/node.model';
 import {Point} from '../models/point';
 import {NodeType} from '../models/node-type.model';
-import {Astar} from '../helpers/pathfinding/astar';
-import {BFS} from '../helpers/pathfinding/bfs';
-import {DFS} from '../helpers/pathfinding/dfs';
-import {Dijkstra} from '../helpers/pathfinding/dijkstra';
+import {dijkstra, getNodesInShortestPathOrder} from '../helpers/pathfinding/dijkstra';
+import {AlgorithmService} from './algorithm.service';
+import {Algorithm} from '../models/algorithm.enum';
 
 type Orientation = 'horizontal' | 'vertical';
 type Speed = 'fast' | 'average' | 'slow';
@@ -30,7 +29,7 @@ export class GridService {
   public isMouseDown = false;
   public isMovingPoint = false;
 
-  constructor() {
+  constructor(private algorithmService: AlgorithmService) {
     for (let i = 0; i < this.rowsCount; i++) {
       const row = [] as Node[];
       for (let j = 0; j < this.colsCount; j++) {
@@ -117,36 +116,87 @@ export class GridService {
     this.nodes.next(this.NODES);
   }
 
-  public generateMaze(): void {
-    this.recursiveDivisionMaze(2, this.rowsCount - 3, 2, this.colsCount - 3, 'horizontal', false);
-    this.mazeGenerationAnimations();
+  private updateNodeType(pos: Point, type: NodeType): void {
+    this.NODES[pos.x][pos.y].type = type;
+    this.nodes.next(this.NODES);
   }
 
   // search algorithms part
 
-  public astar(): void {
-    const astarHelper = new Astar();
-    astarHelper.astar();
+  public getNodeByPos(pos: Point): Node {
+    return this.NODES[pos.x][pos.y];
   }
 
-  public bfs(): void {
-    const bfsHelper = new BFS();
-    bfsHelper.bfs();
+  public doAStar(): void {
+    throw new Error('Method not implemented!');
   }
 
-  public dfs(): void {
-    const dfsHelper = new DFS();
-    dfsHelper.dfs();
+  public doBFS(): void {
+    throw new Error('Method not implemented!');
   }
 
-  public dijkstra(): void {
-    const dijkstraHelper = new Dijkstra();
-    dijkstraHelper.dijkstra();
+  public doDFS(): void {
+    throw new Error('Method not implemented!');
   }
 
-  private updateNodeType(pos: Point, type: NodeType): void {
-    this.NODES[pos.x][pos.y].type = type;
-    this.nodes.next(this.NODES);
+  public animateDijkstra(visitedNodesInOrder: Node[], nodesInShortestPathOrder: Node[]): void {
+    for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+      if (i === visitedNodesInOrder.length) {
+        setTimeout(() => {
+          this.animateShortestPath(nodesInShortestPathOrder);
+        }, 10 * i);
+        return;
+      }
+      setTimeout(() => {
+        const nodePos = visitedNodesInOrder[i].position;
+        if (this.getNodeByPos(nodePos).type !== NodeType.START && this.getNodeByPos(nodePos).type !== NodeType.END) {
+          this.NODES[nodePos.x][nodePos.y].type = NodeType.VISITED;
+        }
+        this.nodes.next(this.NODES);
+      }, 10 * i);
+    }
+  }
+
+  public animateShortestPath(nodesInShortestPathOrder: Node[]): void {
+    for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
+      setTimeout(() => {
+        const nodePos = nodesInShortestPathOrder[i].position;
+        if (!nodePos.equals(this.startNodePos) && !nodePos.equals(this.endNodePos)) {
+          this.NODES[nodePos.x][nodePos.y].type = NodeType.PATH;
+          this.nodes.next(this.NODES);
+        }
+      }, 50 * i);
+    }
+  }
+
+  public doDijkstra(): void {
+    const visitedNodesInOrder = dijkstra(this.NODES, this.getNodeByPos(this.startNodePos), this.getNodeByPos(this.endNodePos));
+    const nodesInShortestPathOrder = getNodesInShortestPathOrder(this.getNodeByPos(this.endNodePos));
+    this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+  }
+
+  public visualize(): void {
+    switch (this.algorithmService.getAlgorithm()) {
+      case Algorithm.ASTAR:
+        this.doAStar();
+        break;
+      case Algorithm.BFS:
+        this.doBFS();
+        break;
+      case Algorithm.DFS:
+        this.doDFS();
+        break;
+      case Algorithm.DIJKSTRA:
+        this.doDijkstra();
+        break;
+    }
+  }
+
+  // Maze part
+
+  public generateMaze(): void {
+    this.recursiveDivisionMaze(2, this.rowsCount - 3, 2, this.colsCount - 3, 'horizontal', false);
+    this.mazeGenerationAnimations();
   }
 
   private recursiveDivisionMaze(

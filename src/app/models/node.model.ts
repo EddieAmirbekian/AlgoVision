@@ -10,15 +10,12 @@ export interface Node {
   position: Point;
 
   type: NodeType;
-
   weight: 15 | 0;
 
   /**
-   * distances from start node
+   * distance from start node
    */
   distance: number;
-  totalDistance: number;
-  heuristicDistance: number;
 
   /**
    * direction of check
@@ -30,6 +27,7 @@ export interface Node {
    */
   previousNode: Node | null;
   path: string[] | null;
+  isVisited?: boolean;
 }
 
 export const EMPTY_NODE: Node = {
@@ -37,8 +35,6 @@ export const EMPTY_NODE: Node = {
   type: NodeType.EMPTY,
   weight: 0,
   distance: Infinity,
-  totalDistance: Infinity,
-  heuristicDistance: Infinity,
   direction: 'none',
   previousNode: null,
   path: null
