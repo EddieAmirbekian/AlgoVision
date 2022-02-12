@@ -2,8 +2,9 @@
   <mat-sidenav #drawer class="sidenav" fixedInViewport [mode]="'over'">
     <mat-toolbar>Algorithms</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item [routerLink]="'pathfinder'" (click)="setActions('pathfinding'); drawer.close()">PathFinding</a>
-      <a mat-list-item [routerLink]="'sorter'" (click)="setActions('sorting'); drawer.close()">Sorting</a>
+      <a mat-list-item [routerLink]="'pathfinder'" (click)="setPage(Page.PATHFINDING); drawer.close()">PathFinding</a>
+      <a mat-list-item [routerLink]="'sorter'" (click)="setPage(Page.SORTING); drawer.close()">Sorting</a>
+      <a mat-list-item [routerLink]="'mst'" (click)="setPage(Page.MST); drawer.close()">MST</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

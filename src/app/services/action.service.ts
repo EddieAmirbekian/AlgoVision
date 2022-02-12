@@ -1,10 +1,12 @@
-import { Injectable } from '@angular/core';
-import { of, Observable, BehaviorSubject } from 'rxjs';
-import { ActionModel } from '../models/action.model';
-import { Algorithm } from '../models/algorithm.enum';
-import { AlgorithmService } from './algorithm.service';
-import { SortingService } from './sorting.service';
-import {GridService} from './grid.service';
+import {Injectable} from '@angular/core';
+import {Observable, of} from 'rxjs';
+import {ActionModel} from '../models/action.model';
+import {Algorithm} from '../models/algorithm.enum';
+import {AlgorithmService} from './algorithm.service';
+import {SortingService} from './sorting.service';
+import {GridService, Speed} from './grid.service';
+import {MstService} from './mst.service';
+import {Page} from '../models/page.enum';
 
 @Injectable()
 export class ActionService {
@@ -12,8 +14,12 @@ export class ActionService {
   constructor(
     private algorithmService: AlgorithmService,
     private gridService: GridService,
+    private mstService: MstService,
     private sortingService: SortingService
   ) {}
+
+  private page: Page = Page.PATHFINDING;
+
   private pathFindingActions: ActionModel[] = [
     new ActionModel('Algorithms')
       .menu()
@@ -26,20 +32,7 @@ export class ActionService {
         new ActionModel('A* Algorithm').button().subscribe(() => {
           this.setAlgorithm(Algorithm.ASTAR);
         })
-      )
-      .addChild(
-        new ActionModel('BFS').button().subscribe(() => {
-          this.setAlgorithm(Algorithm.BFS);
-        })
-      )
-      .addChild(
-        new ActionModel('DFS').button().subscribe(() => {
-          this.setAlgorithm(Algorithm.DFS);
-        })
       ),
-    new ActionModel('Add Point').button().subscribe(() => {
-      this.gridService.addPoint();
-    }),
     new ActionModel('Add Weight').button().subscribe(() => {
       this.gridService.addWeight();
     }),
@@ -56,7 +49,7 @@ export class ActionService {
       this.gridService.clearWallsAndWeights();
     }),
     new ActionModel('Clear Path'),
-    new ActionModel('Speed')
+    new ActionModel('Speed: ' + this.getSpeed())
       .menu()
       .addChild(new ActionModel('Fast').subscribe(() => this.gridService.changeSpeed('fast')))
       .addChild(new ActionModel('Average').subscribe(() => this.gridService.changeSpeed('average')))
@@ -108,24 +101,27 @@ export class ActionService {
       }),
   ];
 
-  public isPathFinding: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
-    true
-  );
-
-  private getPathFindingActions(): Observable<ActionModel[]> {
-    return of(this.pathFindingActions);
-  }
-
-  private getSortingActions(): Observable<ActionModel[]> {
-    return of(this.sortingActions);
-  }
+  private mstActions: ActionModel[] = [
+    new ActionModel('Clear Graph').button().raised().warn().subscribe(() => this.mstService.clear())
+  ];
 
   public getActions(): Observable<ActionModel[]> {
-    if (this.isPathFinding.value) {
-      return this.getPathFindingActions();
-    } else {
-      return this.getSortingActions();
+    switch (this.page) {
+      case Page.MST:
+        return of(this.mstActions);
+      case Page.PATHFINDING:
+        return of(this.pathFindingActions);
+      case Page.SORTING:
+        return of(this.sortingActions);
     }
+  }
+
+  public getPage(): Page {
+    return this.page;
+  }
+
+  public setPage(page: Page): void {
+    this.page = page;
   }
 
   public setAlgorithm(algorithm: Algorithm): void {
@@ -138,5 +134,11 @@ export class ActionService {
 
   public visualize(): void {
     this.gridService.visualize();
+  }
+
+  private getSpeed(): string {
+    const speed = this.gridService.getSpeed();
+    const lower = speed.toLowerCase();
+    return speed.charAt(0).toUpperCase() + lower.slice(1);
   }
 }

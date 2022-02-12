@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ActionModel } from '../../models/action.model';
 import { ActionService } from 'src/app/services/action.service';
-import { Algorithm } from '../../models/algorithm.enum';
+import { Page } from '../../models/page.enum';
 
 @Component({
   selector: 'av-nav',
@@ -12,12 +12,15 @@ import { Algorithm } from '../../models/algorithm.enum';
 export class AvNavComponent {
   constructor(private actionService: ActionService) {}
 
-  public setActions(actionsType: 'pathfinding' | 'sorting'): void {
-    const bool = actionsType === 'pathfinding';
-    this.actionService.isPathFinding.next(bool);
+  public setPage(page: Page): void {
+    this.actionService.setPage(page);
   }
 
   public get actions(): Observable<ActionModel[]> {
     return this.actionService.getActions();
+  }
+
+  public get Page(): typeof Page {
+    return Page;
   }
 }

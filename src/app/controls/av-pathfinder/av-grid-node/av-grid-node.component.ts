@@ -28,10 +28,12 @@ export class AvGridNodeComponent implements OnInit {
 
   public ngOnInit(): void {
     this.setClassName();
-    this.gridService.nodes.asObservable().subscribe((nodes: Node[][]) => {
-      this.node.type = this.gridService.getNodeByPos(new Point(this.row, this.column)).type;
-      this.setClassName();
-    });
+    if (this.row >= 0) {
+      this.gridService.nodes.asObservable().subscribe((nodes: Node[][]) => {
+        this.node.type = this.gridService.getNodeByPos(new Point(this.row, this.column)).type;
+        this.setClassName();
+      });
+    }
   }
 
   public onClick(): void {
@@ -79,9 +81,6 @@ export class AvGridNodeComponent implements OnInit {
           break;
         case NodeType.WALL:
           this.className = 'node-wall';
-          break;
-        case NodeType.POINT:
-          this.className = 'node-point';
           break;
         case NodeType.WEIGHT:
           this.className = 'node-weight';

@@ -1,4 +1,4 @@
-<div class='app-container' [ngClass]="{'light-theme': (isPathFinding | async), 'dark-theme': (isPathFinding | async) === false}">
+<div class='app-container' [ngClass]="{'light-theme': !isSorting, 'dark-theme': isSorting}">
     <av-nav>
         <router-outlet></router-outlet>
     </av-nav>

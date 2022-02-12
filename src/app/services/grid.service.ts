@@ -3,21 +3,19 @@ import {BehaviorSubject} from 'rxjs';
 import {Node} from '../models/node.model';
 import {Point} from '../models/point';
 import {NodeType} from '../models/node-type.model';
-import {dijkstra, getNodesInShortestPathOrder} from '../helpers/pathfinding/dijkstra';
 import {AlgorithmService} from './algorithm.service';
 import {Algorithm} from '../models/algorithm.enum';
+import {dijkstra, getNodesInShortestPathOrder} from "../helpers/pathfinding/dijkstra";
 
 type Orientation = 'horizontal' | 'vertical';
-type Speed = 'fast' | 'average' | 'slow';
+export type Speed = 'fast' | 'average' | 'slow';
 
 @Injectable()
 export class GridService {
   private NODES: Node[][] = [];
-  private speed: Speed = 'average';
+  private speed: Speed = 'fast';
   private wallsToAnimate: Array<Point> = [];
-  private objects: Array<Node> = [];
   private prevPos: Point = new Point(-1, -1);
-  private hasPointPut = false;
 
   public readonly rowsCount = 21;
   public readonly colsCount = 59;
@@ -35,16 +33,28 @@ export class GridService {
       for (let j = 0; j < this.colsCount; j++) {
         const point = new Point(i, j);
         if (point.equals(this.startNodePos)) {
-          row.push({position: point, type: NodeType.START} as Node);
+          row.push({position: point, type: NodeType.START, weight: 0} as Node);
         } else if (point.equals(this.endNodePos)) {
-          row.push({position: point, type: NodeType.END} as Node);
+          row.push({position: point, type: NodeType.END, weight: 0} as Node);
         } else {
-          row.push({position: point, type: NodeType.EMPTY} as Node);
+          row.push({position: point, type: NodeType.EMPTY, weight: 0} as Node);
         }
       }
       this.NODES.push(row);
     }
     this.nodes.next(this.NODES);
+  }
+
+  public get startNode(): Node {
+    return this.getNodeByPos(this.startNodePos);
+  }
+
+  public get endNode(): Node {
+    return this.getNodeByPos(this.endNodePos);
+  }
+
+  public getSpeed(): Speed {
+    return this.speed;
   }
 
   public setPrevPos(pos: Point): void {
@@ -53,17 +63,6 @@ export class GridService {
 
   public getPrevPos(): Point {
     return this.prevPos;
-  }
-
-  public addPoint(): void {
-    if (!this.hasPointPut) {
-      this.hasPointPut = true;
-      let pos = Point.random(this.rowsCount, this.colsCount);
-      while (pos.equals(this.startNodePos) || pos.equals(this.endNodePos)) {
-        pos = Point.random(this.rowsCount, this.colsCount);
-      }
-      this.updateNodeType(pos, NodeType.POINT);
-    }
   }
 
   public movePoint(from: Point, to: Point): void {
@@ -111,8 +110,6 @@ export class GridService {
         }
       }
     }
-    this.objects = [];
-    this.hasPointPut = false;
     this.nodes.next(this.NODES);
   }
 
@@ -131,14 +128,6 @@ export class GridService {
     throw new Error('Method not implemented!');
   }
 
-  public doBFS(): void {
-    throw new Error('Method not implemented!');
-  }
-
-  public doDFS(): void {
-    throw new Error('Method not implemented!');
-  }
-
   public animateDijkstra(visitedNodesInOrder: Node[], nodesInShortestPathOrder: Node[]): void {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
@@ -149,7 +138,10 @@ export class GridService {
       }
       setTimeout(() => {
         const nodePos = visitedNodesInOrder[i].position;
-        if (this.getNodeByPos(nodePos).type !== NodeType.START && this.getNodeByPos(nodePos).type !== NodeType.END) {
+        if (
+          this.getNodeByPos(nodePos).type !== NodeType.START
+          && this.getNodeByPos(nodePos).type !== NodeType.END
+        ) {
           this.NODES[nodePos.x][nodePos.y].type = NodeType.VISITED;
         }
         this.nodes.next(this.NODES);
@@ -161,7 +153,10 @@ export class GridService {
     for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
       setTimeout(() => {
         const nodePos = nodesInShortestPathOrder[i].position;
-        if (!nodePos.equals(this.startNodePos) && !nodePos.equals(this.endNodePos)) {
+        if (
+          !nodePos.equals(this.startNodePos)
+          && !nodePos.equals(this.endNodePos)
+        ) {
           this.NODES[nodePos.x][nodePos.y].type = NodeType.PATH;
           this.nodes.next(this.NODES);
         }
@@ -170,8 +165,8 @@ export class GridService {
   }
 
   public doDijkstra(): void {
-    const visitedNodesInOrder = dijkstra(this.NODES, this.getNodeByPos(this.startNodePos), this.getNodeByPos(this.endNodePos));
-    const nodesInShortestPathOrder = getNodesInShortestPathOrder(this.getNodeByPos(this.endNodePos));
+    const visitedNodesInOrder = dijkstra(this.NODES, this.startNode, this.endNode);
+    const nodesInShortestPathOrder = getNodesInShortestPathOrder(this.endNode);
     this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
   }
 
@@ -179,12 +174,6 @@ export class GridService {
     switch (this.algorithmService.getAlgorithm()) {
       case Algorithm.ASTAR:
         this.doAStar();
-        break;
-      case Algorithm.BFS:
-        this.doBFS();
-        break;
-      case Algorithm.DFS:
-        this.doDFS();
         break;
       case Algorithm.DIJKSTRA:
         this.doDijkstra();
@@ -212,9 +201,6 @@ export class GridService {
     }
     if (!surroundingWalls) {
       const relevantIds = [this.startNodePos, this.endNodePos];
-      if (this.objects) {
-        relevantIds.push(...this.objects.map((value: Node) => value.position));
-      }
       for (let i = 0; i < this.rowsCount; i++) {
         for (let j = 0; j < this.colsCount; j++) {
           if (!relevantIds.includes(new Point(i, j))) {
@@ -305,7 +291,7 @@ export class GridService {
   }
 
   private mazeGenerationAnimations(): void {
-    const nodes = this.wallsToAnimate.slice();
+    const nodes = this.wallsToAnimate.slice().filter((point: Point) => point.x >= 0 && point.y >= 0);
     const speed = this.speed === 'fast' ?
       5 : this.speed === 'average' ?
         25 : 75;

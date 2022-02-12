@@ -17,6 +17,8 @@ import { AvGridNodeComponent } from './av-grid-node/av-grid-node.component';
     AvGridNodeComponent
   ],
   exports: [
+    AvDescriptionComponent,
+    AvGridComponent,
     AvPathfinderComponent
   ],
   imports: [

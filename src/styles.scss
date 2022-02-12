@@ -1,37 +1,37 @@
-@import "~@angular/material/theming";
+@use "@angular/material" as mat;
 
-@include mat-core();
+@include mat.core();
 
-$av-primary: mat-palette($mat-indigo, 800);
-$av-accent: mat-palette($mat-light-green, 600);
-$av-warn: mat-palette($mat-red, 900);
+$av-primary: mat.define-palette(mat.$indigo-palette, 800);
+$av-accent: mat.define-palette(mat.$light-green-palette, 600);
+$av-warn: mat.define-palette(mat.$red-palette, 900);
 
-$av-dark-theme: mat-dark-theme(
-  (
-    color: (
-      primary: $av-primary,
-      accent: $av-accent,
-      warn: $av-warn,
-    ),
-  )
+$av-dark-theme: mat.define-dark-theme(
+    (
+      color: (
+        primary: $av-primary,
+        accent: $av-accent,
+        warn: $av-warn,
+      ),
+    )
 );
 
-$av-light-theme: mat-light-theme(
-  (
-    color: (
-      primary: $av-primary,
-      accent: $av-accent,
-      warn: $av-warn,
-    ),
-  )
+$av-light-theme: mat.define-light-theme(
+    (
+      color: (
+        primary: $av-primary,
+        accent: $av-accent,
+        warn: $av-warn,
+      ),
+    )
 );
 
 .light-theme {
-  @include angular-material-theme($av-light-theme);
+  @include mat.all-component-themes($av-light-theme);
 }
 
 .dark-theme {
-  @include angular-material-theme($av-dark-theme);
+  @include mat.all-component-themes($av-dark-theme);
 }
 
 html,

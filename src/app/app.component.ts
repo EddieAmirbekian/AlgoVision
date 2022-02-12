@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { ActionService } from './services/action.service';
+import {Component} from '@angular/core';
+import {ActionService} from './services/action.service';
+import {Router} from '@angular/router';
+import {Page} from './models/page.enum';
 
 @Component({
   selector: 'av-root',
@@ -11,10 +11,11 @@ import { ActionService } from './services/action.service';
 export class AppComponent {
   title = 'AlgoVision';
 
-  constructor(private actionService: ActionService) {}
+  constructor(private actionService: ActionService, private router: Router) {
+    this.router.navigate(['/pathfinder']);
+  }
 
-  public get isPathFinding(): Observable<boolean> {
-    return this.actionService.isPathFinding
-      .asObservable();
+  public get isSorting(): boolean {
+    return this.actionService.getPage() === Page.SORTING;
   }
 }
