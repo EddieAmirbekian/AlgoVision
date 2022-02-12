@@ -8,7 +8,7 @@ export interface Node {
   position: Point;
 
   type: NodeType;
-  weight: 15 | 0;
+  weight: 15 | 1;
 
   /**
    * distance from start node
@@ -26,7 +26,7 @@ export interface Node {
 export const EMPTY_NODE: Node = {
   position: new Point(-2, -2),
   type: NodeType.EMPTY,
-  weight: 0,
+  weight: 1,
   distance: Infinity,
   previousNode: null,
   path: null

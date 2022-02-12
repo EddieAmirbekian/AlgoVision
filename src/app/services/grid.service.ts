@@ -5,7 +5,13 @@ import {Point} from '../models/point';
 import {NodeType} from '../models/node-type.model';
 import {AlgorithmService} from './algorithm.service';
 import {Algorithm} from '../models/algorithm.enum';
-import {dijkstra, getNodesInShortestPathOrder} from "../helpers/pathfinding/dijkstra";
+import {Dijkstra} from "../helpers/pathfinding/dijkstra";
+import {Astar} from "../helpers/pathfinding/astar";
+import {
+  extraPoweredManhattanDistance,
+  manhattanDistance,
+  poweredManhattanDistance
+} from "../helpers/pathfinding/heuristics";
 
 type Orientation = 'horizontal' | 'vertical';
 export type Speed = 'fast' | 'average' | 'slow';
@@ -33,11 +39,11 @@ export class GridService {
       for (let j = 0; j < this.colsCount; j++) {
         const point = new Point(i, j);
         if (point.equals(this.startNodePos)) {
-          row.push({position: point, type: NodeType.START, weight: 0} as Node);
+          row.push({position: point, type: NodeType.START, weight: 1} as Node);
         } else if (point.equals(this.endNodePos)) {
-          row.push({position: point, type: NodeType.END, weight: 0} as Node);
+          row.push({position: point, type: NodeType.END, weight: 1} as Node);
         } else {
-          row.push({position: point, type: NodeType.EMPTY, weight: 0} as Node);
+          row.push({position: point, type: NodeType.EMPTY, weight: 1} as Node);
         }
       }
       this.NODES.push(row);
@@ -125,10 +131,13 @@ export class GridService {
   }
 
   public doAStar(): void {
-    throw new Error('Method not implemented!');
+    const aStarHelper = new Astar(this.NODES, this.startNode, this.endNode, extraPoweredManhattanDistance(this.endNode));
+    const visitedNodesInOrder = aStarHelper.getNodesInOrder();
+    const nodesInShortestPathOrder = aStarHelper.getNodesInShortestPathOrder();
+    this.animate(visitedNodesInOrder, nodesInShortestPathOrder);
   }
 
-  public animateDijkstra(visitedNodesInOrder: Node[], nodesInShortestPathOrder: Node[]): void {
+  public animate(visitedNodesInOrder: Node[], nodesInShortestPathOrder: Node[]): void {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
@@ -165,9 +174,10 @@ export class GridService {
   }
 
   public doDijkstra(): void {
-    const visitedNodesInOrder = dijkstra(this.NODES, this.startNode, this.endNode);
-    const nodesInShortestPathOrder = getNodesInShortestPathOrder(this.endNode);
-    this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+    const dijkstraHelper = new Dijkstra(this.NODES, this.startNode, this.endNode);
+    const visitedNodesInOrder = dijkstraHelper.getNodesInOrder();
+    const nodesInShortestPathOrder = dijkstraHelper.getNodesInShortestPathOrder();
+    this.animate(visitedNodesInOrder, nodesInShortestPathOrder);
   }
 
   public visualize(): void {
