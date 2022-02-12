@@ -12,6 +12,8 @@ import {
   manhattanDistance,
   poweredManhattanDistance
 } from "../helpers/pathfinding/heuristics";
+import {Swarm} from "../helpers/pathfinding/swarm";
+import {ConvergentSwarm} from "../helpers/pathfinding/convergent-swarm";
 
 type Orientation = 'horizontal' | 'vertical';
 export type Speed = 'fast' | 'average' | 'slow';
@@ -130,13 +132,6 @@ export class GridService {
     return this.NODES[pos.x][pos.y];
   }
 
-  public doAStar(): void {
-    const aStarHelper = new Astar(this.NODES, this.startNode, this.endNode, extraPoweredManhattanDistance(this.endNode));
-    const visitedNodesInOrder = aStarHelper.getNodesInOrder();
-    const nodesInShortestPathOrder = aStarHelper.getNodesInShortestPathOrder();
-    this.animate(visitedNodesInOrder, nodesInShortestPathOrder);
-  }
-
   public animate(visitedNodesInOrder: Node[], nodesInShortestPathOrder: Node[]): void {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
@@ -180,6 +175,27 @@ export class GridService {
     this.animate(visitedNodesInOrder, nodesInShortestPathOrder);
   }
 
+  public doAStar(): void {
+    const aStarHelper = new Astar(this.NODES, this.startNode, this.endNode, poweredManhattanDistance(this.endNode));
+    const visitedNodesInOrder = aStarHelper.getNodesInOrder();
+    const nodesInShortestPathOrder = aStarHelper.getNodesInShortestPathOrder();
+    this.animate(visitedNodesInOrder, nodesInShortestPathOrder);
+  }
+
+  public doSwarm(): void {
+    const swarmHelper = new Swarm(this.NODES, this.startNode, this.endNode, manhattanDistance(this.endNode));
+    const visitedNodesInOrder = swarmHelper.getNodesInOrder();
+    const nodesInShortestPathOrder = swarmHelper.getNodesInShortestPathOrder();
+    this.animate(visitedNodesInOrder, nodesInShortestPathOrder);
+  }
+
+  public doConvergentSwarm(): void {
+    const swarmHelper = new ConvergentSwarm(this.NODES, this.startNode, this.endNode, extraPoweredManhattanDistance(this.endNode));
+    const visitedNodesInOrder = swarmHelper.getNodesInOrder();
+    const nodesInShortestPathOrder = swarmHelper.getNodesInShortestPathOrder();
+    this.animate(visitedNodesInOrder, nodesInShortestPathOrder);
+  }
+
   public visualize(): void {
     switch (this.algorithmService.getAlgorithm()) {
       case Algorithm.ASTAR:
@@ -187,6 +203,12 @@ export class GridService {
         break;
       case Algorithm.DIJKSTRA:
         this.doDijkstra();
+        break;
+      case Algorithm.SWARM:
+        this.doSwarm();
+        break;
+      case Algorithm.CONV_SWARM:
+        this.doConvergentSwarm();
         break;
     }
   }

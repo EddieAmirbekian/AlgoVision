@@ -4,7 +4,7 @@ import {ActionModel} from '../models/action.model';
 import {Algorithm} from '../models/algorithm.enum';
 import {AlgorithmService} from './algorithm.service';
 import {SortingService} from './sorting.service';
-import {GridService, Speed} from './grid.service';
+import {GridService} from './grid.service';
 import {MstService} from './mst.service';
 import {Page} from '../models/page.enum';
 
@@ -16,7 +16,8 @@ export class ActionService {
     private gridService: GridService,
     private mstService: MstService,
     private sortingService: SortingService
-  ) {}
+  ) {
+  }
 
   private page: Page = Page.PATHFINDING;
 
@@ -31,6 +32,16 @@ export class ActionService {
       .addChild(
         new ActionModel('A* Algorithm').button().subscribe(() => {
           this.setAlgorithm(Algorithm.ASTAR);
+        })
+      )
+      .addChild(
+        new ActionModel('Swarm Algorithm').button().subscribe(() => {
+          this.setAlgorithm(Algorithm.SWARM);
+        })
+      )
+      .addChild(
+        new ActionModel('Convergent Swarm Algorithm').button().subscribe(() => {
+          this.setAlgorithm(Algorithm.CONV_SWARM);
         })
       ),
     new ActionModel('Add Weight').button().subscribe(() => {
