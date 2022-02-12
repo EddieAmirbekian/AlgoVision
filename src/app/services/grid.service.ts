@@ -5,15 +5,15 @@ import {Point} from '../models/point';
 import {NodeType} from '../models/node-type.model';
 import {AlgorithmService} from './algorithm.service';
 import {Algorithm} from '../models/algorithm.enum';
-import {Dijkstra} from "../helpers/pathfinding/dijkstra";
-import {Astar} from "../helpers/pathfinding/astar";
+import {Dijkstra} from "../helpers/pathfinding/algorithms/dijkstra";
+import {Astar} from "../helpers/pathfinding/algorithms/astar";
 import {
   extraPoweredManhattanDistance,
   manhattanDistance,
   poweredManhattanDistance
 } from "../helpers/pathfinding/heuristics";
-import {Swarm} from "../helpers/pathfinding/swarm";
-import {ConvergentSwarm} from "../helpers/pathfinding/convergent-swarm";
+import {Swarm} from "../helpers/pathfinding/algorithms/swarm";
+import {ConvergentSwarm} from "../helpers/pathfinding/algorithms/convergent-swarm";
 
 type Orientation = 'horizontal' | 'vertical';
 export type Speed = 'fast' | 'average' | 'slow';
@@ -34,6 +34,7 @@ export class GridService {
 
   public isMouseDown = false;
   public isMovingPoint = false;
+  public isDrawn = false;
 
   constructor(private algorithmService: AlgorithmService) {
     for (let i = 0; i < this.rowsCount; i++) {
@@ -78,12 +79,17 @@ export class GridService {
       const type = this.NODES[from.x][from.y].type;
       this.NODES[to.x][to.y].type = type;
       this.NODES[from.x][from.y].type = NodeType.EMPTY;
+      [this.NODES[from.x][from.y].distance, this.NODES[to.x][to.y].distance] = [this.NODES[to.x][to.y].distance, this.NODES[from.x][from.y].distance]
       if (type === NodeType.START) {
         this.startNodePos = to;
       } else if (type === NodeType.END) {
         this.endNodePos = to;
       }
       this.nodes.next(this.NODES);
+      if (this.isDrawn) {
+        this.clearVisitedAndPath();
+        this.visualize();
+      }
     }
   }
 
@@ -110,6 +116,17 @@ export class GridService {
     this.nodes.next(this.NODES);
   }
 
+  public clearVisitedAndPath(): void {
+    for (let i = 0; i < this.rowsCount; i++) {
+      for (let j = 0; j < this.colsCount; j++) {
+        if (this.NODES[i][j].type === NodeType.VISITED || this.NODES[i][j].type === NodeType.PATH) {
+          this.NODES[i][j].type = NodeType.EMPTY;
+        }
+      }
+    }
+    this.nodes.next(this.NODES);
+  }
+
   public clearAll(): void {
     for (let i = 0; i < this.rowsCount; i++) {
       for (let j = 0; j < this.colsCount; j++) {
@@ -118,6 +135,7 @@ export class GridService {
         }
       }
     }
+    this.isDrawn = false;
     this.nodes.next(this.NODES);
   }
 
@@ -130,6 +148,32 @@ export class GridService {
 
   public getNodeByPos(pos: Point): Node {
     return this.NODES[pos.x][pos.y];
+  }
+
+  public draw(visitedNodesInOrder: Node[], nodesInShortestPathOrder: Node[]): void {
+    for (let i = 0; i < visitedNodesInOrder.length; i++) {
+      const nodePos = visitedNodesInOrder[i].position;
+      if (
+        this.getNodeByPos(nodePos).type !== NodeType.START
+        && this.getNodeByPos(nodePos).type !== NodeType.END
+      ) {
+        this.NODES[nodePos.x][nodePos.y].type = NodeType.VISITED;
+      }
+    }
+    this.drawShortestPath(nodesInShortestPathOrder);
+  }
+
+  public drawShortestPath(nodesInShortestPathOrder: Node[]): void {
+    for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
+      const nodePos = nodesInShortestPathOrder[i].position;
+      if (
+        !nodePos.equals(this.startNodePos)
+        && !nodePos.equals(this.endNodePos)
+      ) {
+        this.NODES[nodePos.x][nodePos.y].type = NodeType.PATH;
+      }
+    }
+    this.nodes.next(this.NODES);
   }
 
   public animate(visitedNodesInOrder: Node[], nodesInShortestPathOrder: Node[]): void {
@@ -172,28 +216,36 @@ export class GridService {
     const dijkstraHelper = new Dijkstra(this.NODES, this.startNode, this.endNode);
     const visitedNodesInOrder = dijkstraHelper.getNodesInOrder();
     const nodesInShortestPathOrder = dijkstraHelper.getNodesInShortestPathOrder();
-    this.animate(visitedNodesInOrder, nodesInShortestPathOrder);
+    const fn = this.isDrawn ? this.draw : this.animate;
+    this.isDrawn = true;
+    fn.apply(this, [visitedNodesInOrder, nodesInShortestPathOrder]);
   }
 
   public doAStar(): void {
     const aStarHelper = new Astar(this.NODES, this.startNode, this.endNode, poweredManhattanDistance(this.endNode));
     const visitedNodesInOrder = aStarHelper.getNodesInOrder();
     const nodesInShortestPathOrder = aStarHelper.getNodesInShortestPathOrder();
-    this.animate(visitedNodesInOrder, nodesInShortestPathOrder);
+    const fn = this.isDrawn ? this.draw : this.animate;
+    this.isDrawn = true;
+    fn.apply(this, [visitedNodesInOrder, nodesInShortestPathOrder]);
   }
 
   public doSwarm(): void {
     const swarmHelper = new Swarm(this.NODES, this.startNode, this.endNode, manhattanDistance(this.endNode));
     const visitedNodesInOrder = swarmHelper.getNodesInOrder();
     const nodesInShortestPathOrder = swarmHelper.getNodesInShortestPathOrder();
-    this.animate(visitedNodesInOrder, nodesInShortestPathOrder);
+    const fn = this.isDrawn ? this.draw : this.animate;
+    this.isDrawn = true;
+    fn.apply(this, [visitedNodesInOrder, nodesInShortestPathOrder]);
   }
 
   public doConvergentSwarm(): void {
     const swarmHelper = new ConvergentSwarm(this.NODES, this.startNode, this.endNode, extraPoweredManhattanDistance(this.endNode));
     const visitedNodesInOrder = swarmHelper.getNodesInOrder();
     const nodesInShortestPathOrder = swarmHelper.getNodesInShortestPathOrder();
-    this.animate(visitedNodesInOrder, nodesInShortestPathOrder);
+    const fn = this.isDrawn ? this.draw : this.animate;
+    this.isDrawn = true;
+    fn.apply(this, [visitedNodesInOrder, nodesInShortestPathOrder]);
   }
 
   public visualize(): void {

@@ -16,6 +16,14 @@ export class AvNavComponent {
     this.actionService.setPage(page);
   }
 
+  public getPage(): Page {
+    return this.actionService.getPage();
+  }
+
+  public isMST(): boolean {
+    return this.getPage() === Page.MST;
+  }
+
   public get actions(): Observable<ActionModel[]> {
     return this.actionService.getActions();
   }

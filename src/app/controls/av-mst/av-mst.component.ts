@@ -92,6 +92,7 @@ export class AvMstComponent implements AfterViewInit {
         this.ctx.beginPath();
         this.ctx.moveTo(reached[parentVertexIdx].x, reached[parentVertexIdx].y);
         this.ctx.lineTo(unreached[minVertexIdx].x, unreached[minVertexIdx].y);
+        this.ctx.strokeStyle = '#b71c1c'
         this.ctx.stroke();
       }
       reached.push(unreached[minVertexIdx]);
@@ -99,7 +100,7 @@ export class AvMstComponent implements AfterViewInit {
     }
     for (const vertex of this.vertices) {
       if (this.ctx) {
-        this.ctx.fillStyle = '#1e2431';
+        this.ctx.fillStyle = '#283593';
         this.ctx.beginPath();
         this.ctx.arc(vertex.x, vertex.y, this.nodeRadius, 0, Math.PI * 2);
         this.ctx.fill();

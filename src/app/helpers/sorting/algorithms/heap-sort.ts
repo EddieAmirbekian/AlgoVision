@@ -1,5 +1,5 @@
-import { Sortable } from './sortable';
-import { ACCENT, PRIMARY, SECONDARY, WARN } from '../styles';
+import { Sortable } from '../sortable';
+import { ACCENT, PRIMARY, SECONDARY, WARN } from '../../styles';
 import {ThemePalette} from '@angular/material/core';
 
 export class HeapSort extends Sortable {

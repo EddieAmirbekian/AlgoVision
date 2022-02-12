@@ -59,8 +59,10 @@ export class ActionService {
     new ActionModel('Clear Walls and Weights').button().subscribe(() => {
       this.gridService.clearWallsAndWeights();
     }),
-    new ActionModel('Clear Path'),
-    new ActionModel('Speed: ' + this.getSpeed())
+    new ActionModel('Clear Path').button().subscribe(() => {
+      this.gridService.clearVisitedAndPath();
+    }),
+    new ActionModel('Speed')
       .menu()
       .addChild(new ActionModel('Fast').subscribe(() => this.gridService.changeSpeed('fast')))
       .addChild(new ActionModel('Average').subscribe(() => this.gridService.changeSpeed('average')))
@@ -145,11 +147,5 @@ export class ActionService {
 
   public visualize(): void {
     this.gridService.visualize();
-  }
-
-  private getSpeed(): string {
-    const speed = this.gridService.getSpeed();
-    const lower = speed.toLowerCase();
-    return speed.charAt(0).toUpperCase() + lower.slice(1);
   }
 }

@@ -13,7 +13,7 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span>AlgoVision</span>
-      <mat-nav-list class="nav-list">
+      <mat-nav-list [ngClass]="{'nav-list': !isMST(), 'nav-list__mst': isMST()}">
         <ng-container mat-list-item *ngFor="let action of actions | async">
           <ng-template [ngIf]="!action.isMenu">
             <ng-template [ngIf]="!action.isRaised">

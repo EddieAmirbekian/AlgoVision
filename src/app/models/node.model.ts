@@ -18,7 +18,7 @@ export interface Node {
   /**
    * for building the path
    */
-  previousNode: Node | null;
+  previousNode: Node;
   path: string[] | null;
   isVisited?: boolean;
 }
@@ -28,6 +28,6 @@ export const EMPTY_NODE: Node = {
   type: NodeType.EMPTY,
   weight: 1,
   distance: Infinity,
-  previousNode: null,
+  previousNode: {} as Node,
   path: null
 };
