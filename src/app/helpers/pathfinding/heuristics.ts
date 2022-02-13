@@ -1,5 +1,7 @@
 import {Node} from "../../models/node.model";
 
+export const zeroDistance = (node: Node) => 0;
+
 export const manhattanDistance = (to: Node) => (from: Node) => {
   const x1 = to.position.x;
   const y1 = to.position.y;

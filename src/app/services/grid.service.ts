@@ -14,6 +14,7 @@ import {
 } from "../helpers/pathfinding/heuristics";
 import {Swarm} from "../helpers/pathfinding/algorithms/swarm";
 import {ConvergentSwarm} from "../helpers/pathfinding/algorithms/convergent-swarm";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 type Orientation = 'horizontal' | 'vertical';
 export type Speed = 'fast' | 'average' | 'slow';
@@ -36,7 +37,10 @@ export class GridService {
   public isMovingPoint = false;
   public isDrawn = false;
 
-  constructor(private algorithmService: AlgorithmService) {
+  constructor(
+    private algorithmService: AlgorithmService,
+    private snackBar: MatSnackBar
+  ) {
     for (let i = 0; i < this.rowsCount; i++) {
       const row = [] as Node[];
       for (let j = 0; j < this.colsCount; j++) {
@@ -60,10 +64,6 @@ export class GridService {
 
   public get endNode(): Node {
     return this.getNodeByPos(this.endNodePos);
-  }
-
-  public getSpeed(): Speed {
-    return this.speed;
   }
 
   public setPrevPos(pos: Point): void {
@@ -94,14 +94,20 @@ export class GridService {
   }
 
   public addWeight(): void {
-    throw new Error('Not implemented.');
+    this.snackBar.open('Press \'left ctrl\' key while drawing walls.', 'OK', {
+      duration: 3000,
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
+      panelClass: ['av-snackbar-container']
+    });
   }
 
-  public doWall(pos: Point): void {
-    if (this.NODES[pos.x][pos.y].type === NodeType.WALL) {
+  public doWallWeight(pos: Point, isWeight: boolean): void {
+    const obj = isWeight ? NodeType.WEIGHT : NodeType.WALL;
+    if (this.NODES[pos.x][pos.y].type === obj) {
       this.updateNodeType(pos, NodeType.EMPTY);
     } else if (this.NODES[pos.x][pos.y].type === NodeType.EMPTY) {
-      this.updateNodeType(pos, NodeType.WALL);
+      this.updateNodeType(pos, obj);
     }
   }
 
@@ -116,13 +122,16 @@ export class GridService {
     this.nodes.next(this.NODES);
   }
 
-  public clearVisitedAndPath(): void {
+  public clearVisitedAndPath(fromActions: boolean = false): void {
     for (let i = 0; i < this.rowsCount; i++) {
       for (let j = 0; j < this.colsCount; j++) {
         if (this.NODES[i][j].type === NodeType.VISITED || this.NODES[i][j].type === NodeType.PATH) {
           this.NODES[i][j].type = NodeType.EMPTY;
         }
       }
+    }
+    if (fromActions) {
+      this.isDrawn = false;
     }
     this.nodes.next(this.NODES);
   }
@@ -141,6 +150,7 @@ export class GridService {
 
   private updateNodeType(pos: Point, type: NodeType): void {
     this.NODES[pos.x][pos.y].type = type;
+    this.NODES[pos.x][pos.y].weight = type === NodeType.WEIGHT ? 15 : 1;
     this.nodes.next(this.NODES);
   }
 
@@ -215,7 +225,7 @@ export class GridService {
   public doDijkstra(): void {
     const dijkstraHelper = new Dijkstra(this.NODES, this.startNode, this.endNode);
     const visitedNodesInOrder = dijkstraHelper.getNodesInOrder();
-    const nodesInShortestPathOrder = dijkstraHelper.getNodesInShortestPathOrder();
+    const nodesInShortestPathOrder = Dijkstra.endReached(visitedNodesInOrder) ? dijkstraHelper.getNodesInShortestPathOrder() : [];
     const fn = this.isDrawn ? this.draw : this.animate;
     this.isDrawn = true;
     fn.apply(this, [visitedNodesInOrder, nodesInShortestPathOrder]);
@@ -224,7 +234,7 @@ export class GridService {
   public doAStar(): void {
     const aStarHelper = new Astar(this.NODES, this.startNode, this.endNode, poweredManhattanDistance(this.endNode));
     const visitedNodesInOrder = aStarHelper.getNodesInOrder();
-    const nodesInShortestPathOrder = aStarHelper.getNodesInShortestPathOrder();
+    const nodesInShortestPathOrder = Astar.endReached(visitedNodesInOrder) ? aStarHelper.getNodesInShortestPathOrder() : [];
     const fn = this.isDrawn ? this.draw : this.animate;
     this.isDrawn = true;
     fn.apply(this, [visitedNodesInOrder, nodesInShortestPathOrder]);
@@ -233,7 +243,7 @@ export class GridService {
   public doSwarm(): void {
     const swarmHelper = new Swarm(this.NODES, this.startNode, this.endNode, manhattanDistance(this.endNode));
     const visitedNodesInOrder = swarmHelper.getNodesInOrder();
-    const nodesInShortestPathOrder = swarmHelper.getNodesInShortestPathOrder();
+    const nodesInShortestPathOrder = Swarm.endReached(visitedNodesInOrder) ? swarmHelper.getNodesInShortestPathOrder() : [];
     const fn = this.isDrawn ? this.draw : this.animate;
     this.isDrawn = true;
     fn.apply(this, [visitedNodesInOrder, nodesInShortestPathOrder]);
@@ -242,7 +252,7 @@ export class GridService {
   public doConvergentSwarm(): void {
     const swarmHelper = new ConvergentSwarm(this.NODES, this.startNode, this.endNode, extraPoweredManhattanDistance(this.endNode));
     const visitedNodesInOrder = swarmHelper.getNodesInOrder();
-    const nodesInShortestPathOrder = swarmHelper.getNodesInShortestPathOrder();
+    const nodesInShortestPathOrder = ConvergentSwarm.endReached(visitedNodesInOrder) ? swarmHelper.getNodesInShortestPathOrder() : [];
     const fn = this.isDrawn ? this.draw : this.animate;
     this.isDrawn = true;
     fn.apply(this, [visitedNodesInOrder, nodesInShortestPathOrder]);

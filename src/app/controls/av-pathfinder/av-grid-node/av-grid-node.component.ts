@@ -37,26 +37,31 @@ export class AvGridNodeComponent implements OnInit {
   }
 
   public onClick(): void {
-    this.gridService.isMovingPoint = !this.gridService.isMovingPoint;
-    if (this.gridService.isMovingPoint) {
+    if (this.node.type === NodeType.START || this.node.type === NodeType.END) {
+      this.gridService.isMovingPoint = true;
       this.gridService.setPrevPos(this.node.position);
-    } else {
-      this.gridService.movePoint(this.gridService.getPrevPos(), this.node.position);
+    }
+    if (this.gridService.isMovingPoint && this.canMoveTo()) {
+      this.gridService.isMovingPoint = !this.gridService.isMovingPoint;
+      if (!this.gridService.isMovingPoint) {
+        this.gridService.movePoint(this.gridService.getPrevPos(), this.node.position);
+      }
+      return;
     }
   }
 
   public onMouseDown(event: MouseEvent): void {
-    event.stopPropagation();
-    if (this.canDoWall() && !this.gridService.isMovingPoint) {
+    event.preventDefault();
+    if (this.canDo(event.ctrlKey) && !this.gridService.isMovingPoint) {
       this.gridService.isMouseDown = true;
-      this.gridService.doWall(this.node.position);
+      this.gridService.doWallWeight(this.node.position, event.ctrlKey);
     }
   }
 
   public onMouseEnter(event: MouseEvent): void {
-    event.stopPropagation();
-    if (this.gridService.isMouseDown && this.canDoWall()) {
-      this.gridService.doWall(this.node.position);
+    event.preventDefault();
+    if (this.gridService.isMouseDown && this.canDo(event.ctrlKey)) {
+      this.gridService.doWallWeight(this.node.position, event.ctrlKey);
     }
   }
 
@@ -68,6 +73,18 @@ export class AvGridNodeComponent implements OnInit {
 
   private canDoWall(): boolean {
     return this.node.type === NodeType.EMPTY || this.node.type === NodeType.WALL;
+  }
+
+  private canDoWeight(): boolean {
+    return this.node.type === NodeType.EMPTY;
+  }
+
+  private canDo(ctrKey: boolean): boolean {
+    return ctrKey ? this.canDoWeight() : this.canDoWall();
+  }
+
+  private canMoveTo(): boolean {
+    return this.node.type === NodeType.EMPTY || this.node.type === NodeType.VISITED || this.node.type === NodeType.PATH;
   }
 
   private setClassName(): void {

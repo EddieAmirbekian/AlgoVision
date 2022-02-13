@@ -60,7 +60,7 @@ export class ActionService {
       this.gridService.clearWallsAndWeights();
     }),
     new ActionModel('Clear Path').button().subscribe(() => {
-      this.gridService.clearVisitedAndPath();
+      this.gridService.clearVisitedAndPath(true);
     }),
     new ActionModel('Speed')
       .menu()

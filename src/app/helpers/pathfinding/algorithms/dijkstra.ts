@@ -9,6 +9,10 @@ export class Dijkstra {
   ) {
   }
 
+  public static endReached(visitedNodesInOrder: Node[]): boolean {
+    return !!visitedNodesInOrder.filter((node: Node) => node.type === NodeType.END).length;
+  }
+
   public getNodesInOrder(): Node[] {
     const visitedNodesInOrder = [];
     this.startNode.distance = 0;
