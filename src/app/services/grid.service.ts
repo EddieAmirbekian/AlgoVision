@@ -152,6 +152,11 @@ export class GridService {
         ) {
           this.NODES[i][j].type = NodeType.EMPTY;
           this.NODES[i][j].weight = 1;
+        } else if (
+          this.NODES[i][j].type === NodeType.WVISITED ||
+          this.NODES[i][j].type === NodeType.WPATH
+        ) {
+          this.NODES[i][j].type = NodeType.WEIGHT;
         }
       }
     }
@@ -179,7 +184,7 @@ export class GridService {
 
   private updateNodeType(pos: Point, type: NodeType): void {
     this.NODES[pos.x][pos.y].type = type;
-    this.NODES[pos.x][pos.y].weight = type === NodeType.WEIGHT ? 15 : 1;
+    this.NODES[pos.x][pos.y].weight = type === NodeType.WEIGHT ? 30 : 1;
     this.nodes.next(this.NODES);
   }
 
@@ -196,7 +201,10 @@ export class GridService {
         this.getNodeByPos(nodePos).type !== NodeType.START &&
         this.getNodeByPos(nodePos).type !== NodeType.END
       ) {
-        this.NODES[nodePos.x][nodePos.y].type = NodeType.VISITED;
+        this.NODES[nodePos.x][nodePos.y].type =
+          this.getNodeByPos(nodePos).type !== NodeType.WEIGHT
+            ? NodeType.VISITED
+            : NodeType.WVISITED;
       }
     }
     this.drawShortestPath(nodesInShortestPathOrder);
@@ -209,7 +217,10 @@ export class GridService {
         !nodePos.equals(this.startNodePos) &&
         !nodePos.equals(this.endNodePos)
       ) {
-        this.NODES[nodePos.x][nodePos.y].type = NodeType.PATH;
+        this.NODES[nodePos.x][nodePos.y].type =
+          this.getNodeByPos(nodePos).type !== NodeType.WEIGHT
+            ? NodeType.PATH
+            : NodeType.WPATH;
       }
     }
     this.nodes.next(this.NODES);
@@ -230,6 +241,7 @@ export class GridService {
             });
           }
         }, 10 * i);
+        return;
       }
       setTimeout(() => {
         const nodePos = visitedNodesInOrder[i].position;
@@ -237,7 +249,10 @@ export class GridService {
           this.getNodeByPos(nodePos).type !== NodeType.START &&
           this.getNodeByPos(nodePos).type !== NodeType.END
         ) {
-          this.NODES[nodePos.x][nodePos.y].type = NodeType.VISITED;
+          this.NODES[nodePos.x][nodePos.y].type =
+            this.getNodeByPos(nodePos).type !== NodeType.WEIGHT
+              ? NodeType.VISITED
+              : NodeType.WVISITED;
         }
         this.nodes.next(this.NODES);
       }, 10 * i);
@@ -252,7 +267,10 @@ export class GridService {
           !nodePos.equals(this.startNodePos) &&
           !nodePos.equals(this.endNodePos)
         ) {
-          this.NODES[nodePos.x][nodePos.y].type = NodeType.PATH;
+          this.NODES[nodePos.x][nodePos.y].type =
+            this.getNodeByPos(nodePos).type !== NodeType.WVISITED
+              ? NodeType.PATH
+              : NodeType.WPATH;
           this.nodes.next(this.NODES);
         }
       }, 50 * i);

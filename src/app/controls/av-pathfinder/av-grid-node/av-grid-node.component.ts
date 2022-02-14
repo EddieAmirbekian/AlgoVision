@@ -82,7 +82,9 @@ export class AvGridNodeComponent implements OnInit {
   }
 
   private canDoWeight(): boolean {
-    return this.node.type === NodeType.EMPTY;
+    return (
+      this.node.type === NodeType.EMPTY || this.node.type === NodeType.WEIGHT
+    );
   }
 
   private canDo(ctrKey: boolean): boolean {
@@ -117,6 +119,12 @@ export class AvGridNodeComponent implements OnInit {
           break;
         case NodeType.PATH:
           this.className = 'node-path';
+          break;
+        case NodeType.WVISITED:
+          this.className = 'node-wvisited';
+          break;
+        case NodeType.WPATH:
+          this.className = 'node-wpath';
           break;
         default:
           this.className = '';

@@ -6,4 +6,6 @@ export enum NodeType {
   WEIGHT = 4,
   VISITED = 5,
   PATH = 6,
+  WVISITED = 7,
+  WPATH = 8,
 }

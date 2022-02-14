@@ -8,7 +8,7 @@ export interface Node {
   position: Point;
 
   type: NodeType;
-  weight: 15 | 1;
+  weight: 30 | 1;
 
   /**
    * distance from start node
