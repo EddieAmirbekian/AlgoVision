@@ -13,7 +13,14 @@ import { AvMstModule } from './av-mst/av-mst.module';
 
 @NgModule({
   declarations: [AvNavComponent],
-  imports: [AvMstModule, AvPathfinderModule, AvSorterModule, CommonModule, MaterialModule, RouterModule],
+  imports: [
+    AvMstModule,
+    AvPathfinderModule,
+    AvSorterModule,
+    CommonModule,
+    MaterialModule,
+    RouterModule,
+  ],
   exports: [AvMstModule, AvNavComponent, AvPathfinderModule, AvSorterModule],
   providers: [ActionService, AlgorithmService, GridService, SortingService],
 })

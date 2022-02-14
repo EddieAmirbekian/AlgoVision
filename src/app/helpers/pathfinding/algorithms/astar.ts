@@ -1,5 +1,5 @@
-import {Node} from "../../../models/node.model";
-import {Dijkstra} from "./dijkstra";
+import { Node } from '../../../models/node.model';
+import { Dijkstra } from './dijkstra';
 
 export class Astar extends Dijkstra {
   constructor(

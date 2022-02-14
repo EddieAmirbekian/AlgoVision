@@ -16,7 +16,7 @@ export class QuickSort extends Sortable {
     this.divSizes[j] = tmp;
   }
 
-  public quickPartition(start: number, end: number): number {
+  quickPartition(start: number, end: number): number {
     let i = start + 1;
     const piv = this.divSizes[start];
     this.updateDiv(this.divs[start], this.divSizes[start], SECONDARY);
@@ -54,7 +54,7 @@ export class QuickSort extends Sortable {
     return i - 1;
   }
 
-  public quickSort(start: number, end: number): void {
+  quickSort(start: number, end: number): void {
     if (start < end) {
       const pivotPos = this.quickPartition(start, end);
       this.quickSort(start, pivotPos - 1);

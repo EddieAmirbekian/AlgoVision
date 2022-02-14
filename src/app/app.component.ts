@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
-import {ActionService} from './services/action.service';
-import {Router} from '@angular/router';
-import {Page} from './models/page.enum';
+import { Component } from '@angular/core';
+import { ActionService } from './services/action.service';
+import { Router } from '@angular/router';
+import { Page } from './models/page.enum';
 
 @Component({
   selector: 'av-root',
@@ -15,7 +15,7 @@ export class AppComponent {
     this.router.navigate(['/pathfinder']);
   }
 
-  public get isSorting(): boolean {
+  get isSorting(): boolean {
     return this.actionService.getPage() === Page.SORTING;
   }
 }

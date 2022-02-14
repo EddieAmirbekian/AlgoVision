@@ -29,5 +29,5 @@ export const EMPTY_NODE: Node = {
   weight: 1,
   distance: Infinity,
   previousNode: {} as Node,
-  path: null
+  path: null,
 };

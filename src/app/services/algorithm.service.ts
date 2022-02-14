@@ -4,14 +4,15 @@ import { Algorithm } from '../models/algorithm.enum';
 
 @Injectable()
 export class AlgorithmService {
-  public currentAlgorithm: BehaviorSubject<Algorithm> =
-    new BehaviorSubject<Algorithm>(Algorithm.NONE);
+  currentAlgorithm: BehaviorSubject<Algorithm> = new BehaviorSubject<Algorithm>(
+    Algorithm.NONE
+  );
 
-  public setAlgorithm(algorithm: Algorithm): void {
+  setAlgorithm(algorithm: Algorithm): void {
     this.currentAlgorithm.next(algorithm);
   }
 
-  public getAlgorithm(): Algorithm {
+  getAlgorithm(): Algorithm {
     return this.currentAlgorithm.value;
   }
 }

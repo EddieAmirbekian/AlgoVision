@@ -17,13 +17,14 @@
         <ng-container mat-list-item *ngFor="let action of actions | async">
           <ng-template [ngIf]="!action.isMenu">
             <ng-template [ngIf]="!action.isRaised">
-              <button mat-button *ngIf="action.isVisible" [color]="action.color" [disabled]="action.disabled" (click)="action.click()">
+              <button mat-button *ngIf="action.isVisible" [color]="action.color" [disabled]="action.disabled"
+                      (click)="action.click()">
                 {{action.title}}
               </button>
             </ng-template>
             <ng-template [ngIf]="action.isRaised">
               <button mat-raised-button *ngIf="action.isVisible" [color]="action.color" (click)="action.click()"
-                [disabled]="action.disabled">
+                      [disabled]="action.disabled">
                 {{action.title}}
               </button>
             </ng-template>
@@ -33,8 +34,8 @@
                     [matMenuTriggerFor]="menu"
                     [color]="action.color"
                     [disabled]="action.disabled">
-                {{action.title}}
-                <mat-icon>keyboard_arrow_down</mat-icon>
+              {{action.title}}
+              <mat-icon>keyboard_arrow_down</mat-icon>
             </button>
             <mat-menu #menu>
               <button mat-menu-item *ngFor="let child of action.children"

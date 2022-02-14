@@ -1,15 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'av-pathfinder',
   templateUrl: './av-pathfinder.component.html',
-  styleUrls: ['./av-pathfinder.component.scss']
+  styleUrls: ['./av-pathfinder.component.scss'],
 })
-export class AvPathfinderComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class AvPathfinderComponent {}

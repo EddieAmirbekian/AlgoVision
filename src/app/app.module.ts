@@ -7,17 +7,15 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { ControlsModule } from './controls/controls.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
-    BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    BrowserModule,
+    ControlsModule,
     LayoutModule,
-    ControlsModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

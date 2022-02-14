@@ -1,19 +1,20 @@
-import {EMPTY_NODE, Node} from '../../../models/node.model';
-import {NodeType} from '../../../models/node-type.model';
+import { EMPTY_NODE, Node } from '../../../models/node.model';
+import { NodeType } from '../../../models/node-type.model';
 
 export class Dijkstra {
   constructor(
     public grid: Node[][],
     public startNode: Node,
     public endNode: Node
-  ) {
+  ) {}
+
+  static endReached(visitedNodesInOrder: Node[]): boolean {
+    return !!visitedNodesInOrder.filter(
+      (node: Node) => node.type === NodeType.END
+    ).length;
   }
 
-  public static endReached(visitedNodesInOrder: Node[]): boolean {
-    return !!visitedNodesInOrder.filter((node: Node) => node.type === NodeType.END).length;
-  }
-
-  public getNodesInOrder(): Node[] {
+  getNodesInOrder(): Node[] {
     const visitedNodesInOrder = [];
     this.startNode.distance = 0;
     const unvisitedNodes = this.getAllNodes();
@@ -42,7 +43,7 @@ export class Dijkstra {
     return [];
   }
 
-  public getNodesInShortestPathOrder(): Node[] {
+  getNodesInShortestPathOrder(): Node[] {
     const nodesInShortestPathOrder = [] as Node[];
     let currentNode: Node = this.endNode;
     while (currentNode !== undefined && currentNode !== null) {
@@ -83,7 +84,7 @@ export class Dijkstra {
     if (col < this.grid[0].length - 1) {
       neighbors.push(this.grid[row][col + 1]);
     }
-    return neighbors.filter(neighbor => !neighbor.isVisited);
+    return neighbors.filter((neighbor) => !neighbor.isVisited);
   }
 
   protected getAllNodes(): Node[] {

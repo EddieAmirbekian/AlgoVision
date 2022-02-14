@@ -1,25 +1,24 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
-import {Point} from '../../models/point';
-import {MstService} from '../../services/mst.service';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { Point } from '../../models/point';
+import { MstService } from '../../services/mst.service';
 
 @Component({
   selector: 'av-mst',
   templateUrl: './av-mst.component.html',
-  styleUrls: ['./av-mst.component.scss']
+  styleUrls: ['./av-mst.component.scss'],
 })
 export class AvMstComponent implements AfterViewInit {
-  public readonly nodeRadius = 8;
+  readonly nodeRadius = 8;
 
-  @ViewChild('canvasElement', {static: false})
-  public canvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvasElement', { static: false })
+  canvas!: ElementRef<HTMLCanvasElement>;
 
   private ctx: CanvasRenderingContext2D | null = null;
-  private vertices: Array<Point> = [];
+  private vertices: Point[] = [];
 
-  constructor(private mst: MstService) {
-  }
+  constructor(private mst: MstService) {}
 
-  public ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     this.ctx = this.canvas.nativeElement.getContext('2d');
     this.canvas.nativeElement.height = window.innerHeight;
     this.canvas.nativeElement.width = window.innerWidth;
@@ -27,7 +26,7 @@ export class AvMstComponent implements AfterViewInit {
     this.mst.clearSubject().subscribe(() => this.clear());
   }
 
-  public canvasClick(e: MouseEvent): void {
+  canvasClick(e: MouseEvent): void {
     e.preventDefault();
     if (this.canvas) {
       const rect = this.canvas.nativeElement.getBoundingClientRect();
@@ -39,16 +38,18 @@ export class AvMstComponent implements AfterViewInit {
     }
   }
 
-  public canvasContextMenu(e: MouseEvent): void {
+  canvasContextMenu(e: MouseEvent): void {
     e.preventDefault();
     if (this.canvas) {
       const rect = this.canvas.nativeElement.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       for (let i = 0; i < this.vertices.length; ++i) {
-        const isInside = Math.sqrt(
-          Math.pow(this.vertices[i].x - x, 2) + Math.pow(this.vertices[i].y - y, 2)
-        ) < this.nodeRadius;
+        const isInside =
+          Math.sqrt(
+            Math.pow(this.vertices[i].x - x, 2) +
+              Math.pow(this.vertices[i].y - y, 2)
+          ) < this.nodeRadius;
         if (isInside) {
           this.vertices.splice(i, 1);
           break;
@@ -58,20 +59,25 @@ export class AvMstComponent implements AfterViewInit {
     }
   }
 
-  public doPrim(): void {
+  doPrim(): void {
     if (this.canvas && this.ctx) {
-      this.ctx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+      this.ctx.clearRect(
+        0,
+        0,
+        this.canvas.nativeElement.width,
+        this.canvas.nativeElement.height
+      );
       this.primsMST(this.vertices);
     }
   }
 
-  public euclideanDistance(p1: Point, p2: Point): number {
+  euclideanDistance(p1: Point, p2: Point): number {
     return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
   }
 
-  public primsMST(vertices: Array<Point>): void {
-    const unreached = [...vertices] as Array<Point>;
-    const reached = [] as Array<Point>;
+  primsMST(vertices: Point[]): void {
+    const unreached = [...vertices] as Point[];
+    const reached = [] as Point[];
     reached.push(unreached[0]);
     unreached.splice(0, 1);
     while (unreached.length) {
@@ -92,7 +98,7 @@ export class AvMstComponent implements AfterViewInit {
         this.ctx.beginPath();
         this.ctx.moveTo(reached[parentVertexIdx].x, reached[parentVertexIdx].y);
         this.ctx.lineTo(unreached[minVertexIdx].x, unreached[minVertexIdx].y);
-        this.ctx.strokeStyle = '#b71c1c'
+        this.ctx.strokeStyle = '#b71c1c';
         this.ctx.stroke();
       }
       reached.push(unreached[minVertexIdx]);
@@ -108,9 +114,14 @@ export class AvMstComponent implements AfterViewInit {
     }
   }
 
-  public clear(): void {
+  clear(): void {
     if (this.ctx && this.canvas) {
-      this.ctx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+      this.ctx.clearRect(
+        0,
+        0,
+        this.canvas.nativeElement.width,
+        this.canvas.nativeElement.height
+      );
       this.vertices = [];
     }
   }

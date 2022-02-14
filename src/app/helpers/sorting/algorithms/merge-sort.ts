@@ -1,5 +1,5 @@
 import { Sortable } from '../sortable';
-import { ACCENT, PRIMARY, SECONDARY, WARN } from '../../styles';
+import { ACCENT, SECONDARY, WARN } from '../../styles';
 
 export class MergeSort extends Sortable {
   constructor(
@@ -10,7 +10,7 @@ export class MergeSort extends Sortable {
     super(divs, divSizes, speed);
   }
 
-  public mergePartition(start: number, end: number): void {
+  mergePartition(start: number, end: number): void {
     if (start < end) {
       const mid = Math.floor((start + end) / 2);
       this.updateDiv(this.divs[mid], this.divSizes[mid], SECONDARY);

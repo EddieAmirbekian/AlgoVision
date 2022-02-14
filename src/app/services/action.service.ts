@@ -1,23 +1,21 @@
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {ActionModel} from '../models/action.model';
-import {Algorithm} from '../models/algorithm.enum';
-import {AlgorithmService} from './algorithm.service';
-import {SortingService} from './sorting.service';
-import {GridService} from './grid.service';
-import {MstService} from './mst.service';
-import {Page} from '../models/page.enum';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { ActionModel } from '../models/action.model';
+import { Algorithm } from '../models/algorithm.enum';
+import { AlgorithmService } from './algorithm.service';
+import { SortingService } from './sorting.service';
+import { GridService } from './grid.service';
+import { MstService } from './mst.service';
+import { Page } from '../models/page.enum';
 
 @Injectable()
 export class ActionService {
-
   constructor(
     private algorithmService: AlgorithmService,
     private gridService: GridService,
     private mstService: MstService,
     private sortingService: SortingService
-  ) {
-  }
+  ) {}
 
   private page: Page = Page.PATHFINDING;
 
@@ -25,7 +23,7 @@ export class ActionService {
     new ActionModel('Algorithms')
       .menu()
       .addChild(
-        new ActionModel('Dijkstra\'s Algorithm').button().subscribe(() => {
+        new ActionModel("Dijkstra's Algorithm").button().subscribe(() => {
           this.setAlgorithm(Algorithm.DIJKSTRA);
         })
       )
@@ -50,9 +48,13 @@ export class ActionService {
     new ActionModel('Generate Maze').button().subscribe(() => {
       this.gridService.generateMaze();
     }),
-    new ActionModel('Visualize!').warn().raised().button().subscribe(() => {
-      this.visualize();
-    }),
+    new ActionModel('Visualize!')
+      .warn()
+      .raised()
+      .button()
+      .subscribe(() => {
+        this.visualize();
+      }),
     new ActionModel('Clear Board').button().subscribe(() => {
       this.gridService.clearAll();
     }),
@@ -64,9 +66,21 @@ export class ActionService {
     }),
     new ActionModel('Speed')
       .menu()
-      .addChild(new ActionModel('Fast').subscribe(() => this.gridService.changeSpeed('fast')))
-      .addChild(new ActionModel('Average').subscribe(() => this.gridService.changeSpeed('average')))
-      .addChild(new ActionModel('Slow').subscribe(() => this.gridService.changeSpeed('slow')))
+      .addChild(
+        new ActionModel('Fast').subscribe(() =>
+          this.gridService.changeSpeed('fast')
+        )
+      )
+      .addChild(
+        new ActionModel('Average').subscribe(() =>
+          this.gridService.changeSpeed('average')
+        )
+      )
+      .addChild(
+        new ActionModel('Slow').subscribe(() =>
+          this.gridService.changeSpeed('slow')
+        )
+      ),
   ];
 
   private sortingActions: ActionModel[] = [
@@ -115,10 +129,14 @@ export class ActionService {
   ];
 
   private mstActions: ActionModel[] = [
-    new ActionModel('Clear Graph').button().raised().warn().subscribe(() => this.mstService.clear())
+    new ActionModel('Clear Graph')
+      .button()
+      .raised()
+      .warn()
+      .subscribe(() => this.mstService.clear()),
   ];
 
-  public getActions(): Observable<ActionModel[]> {
+  getActions(): Observable<ActionModel[]> {
     switch (this.page) {
       case Page.MST:
         return of(this.mstActions);
@@ -129,23 +147,23 @@ export class ActionService {
     }
   }
 
-  public getPage(): Page {
+  getPage(): Page {
     return this.page;
   }
 
-  public setPage(page: Page): void {
+  setPage(page: Page): void {
     this.page = page;
   }
 
-  public setAlgorithm(algorithm: Algorithm): void {
+  setAlgorithm(algorithm: Algorithm): void {
     this.algorithmService.setAlgorithm(algorithm);
   }
 
-  public sort(): void {
+  sort(): void {
     this.sortingService.sort();
   }
 
-  public visualize(): void {
+  visualize(): void {
     this.gridService.visualize();
   }
 }

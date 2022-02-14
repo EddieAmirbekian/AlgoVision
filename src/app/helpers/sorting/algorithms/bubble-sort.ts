@@ -10,7 +10,7 @@ export class BubbleSort extends Sortable {
     super(divs, divSizes, speed);
   }
 
-  public bubbleSort(): void {
+  bubbleSort(): void {
     let i: number;
     let j: number;
     for (i = 0; i < this.divSizes.length - 1; i++) {

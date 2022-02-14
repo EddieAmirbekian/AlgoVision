@@ -12,23 +12,23 @@ import { Page } from '../../models/page.enum';
 export class AvNavComponent {
   constructor(private actionService: ActionService) {}
 
-  public setPage(page: Page): void {
+  setPage(page: Page): void {
     this.actionService.setPage(page);
   }
 
-  public getPage(): Page {
+  getPage(): Page {
     return this.actionService.getPage();
   }
 
-  public isMST(): boolean {
+  isMST(): boolean {
     return this.getPage() === Page.MST;
   }
 
-  public get actions(): Observable<ActionModel[]> {
+  get actions(): Observable<ActionModel[]> {
     return this.actionService.getActions();
   }
 
-  public get Page(): typeof Page {
+  get Page(): typeof Page {
     return Page;
   }
 }

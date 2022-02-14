@@ -1,7 +1,7 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {GridService} from '../../../services/grid.service';
-import {Node} from '../../../models/node.model';
-import {first} from 'rxjs/operators';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { GridService } from '../../../services/grid.service';
+import { Node } from '../../../models/node.model';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'av-grid',
@@ -9,14 +9,17 @@ import {first} from 'rxjs/operators';
   styleUrls: ['./av-grid.component.scss'],
 })
 export class AvGridComponent implements OnInit {
-  public renderedNodes: Node[][] = [];
-  constructor(private gridService: GridService, public cdRef: ChangeDetectorRef) {
-  }
+  renderedNodes: Node[][] = [];
 
-  public ngOnInit(): void {
+  constructor(
+    private gridService: GridService,
+    public cdRef: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
     this.gridService.nodes
       .asObservable()
       .pipe(first())
-      .subscribe((nodes: Node[][]) => this.renderedNodes = nodes);
+      .subscribe((nodes: Node[][]) => (this.renderedNodes = nodes));
   }
 }

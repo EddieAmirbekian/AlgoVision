@@ -1,8 +1,8 @@
 <div class="container">
-    <ng-container *ngFor="let row of renderedNodes as nodes; let i = index">
-      <ng-container *ngFor="let cols of row; let j = index">
-        <av-grid-node [node]="nodes[i][j]"></av-grid-node>
-      </ng-container>
-      <br>
+  <ng-container *ngFor="let row of renderedNodes as nodes; let i = index">
+    <ng-container *ngFor="let cols of row; let j = index">
+      <av-grid-node [node]="nodes[i][j]"></av-grid-node>
     </ng-container>
+    <br>
+  </ng-container>
 </div>

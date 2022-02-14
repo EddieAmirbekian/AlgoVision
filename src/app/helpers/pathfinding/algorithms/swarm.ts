@@ -1,5 +1,5 @@
-import {Astar} from "./astar";
-import {Node} from "../../../models/node.model";
+import { Astar } from './astar';
+import { Node } from '../../../models/node.model';
 
 export class Swarm extends Astar {
   constructor(

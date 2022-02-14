@@ -1,6 +1,5 @@
 import { Sortable } from '../sortable';
 import { ACCENT, PRIMARY, SECONDARY, WARN } from '../../styles';
-import {ThemePalette} from '@angular/material/core';
 
 export class HeapSort extends Sortable {
   constructor(
@@ -33,7 +32,12 @@ export class HeapSort extends Sortable {
     return n < size && this.divSizes[n] > this.divSizes[largest];
   }
 
-  protected heapify(n: number, i: number, size: number, largest: number): number | undefined {
+  protected heapify(
+    n: number,
+    i: number,
+    size: number,
+    largest: number
+  ): number | undefined {
     if (this.checkForHeapify(n, size, largest)) {
       if (largest !== i) {
         this.updateDiv(this.divs[largest], this.divSizes[largest], PRIMARY);
@@ -51,7 +55,6 @@ export class HeapSort extends Sortable {
     const l = 2 * i + 1;
     const r = 2 * i + 2;
 
-
     tmp = this.heapify(l, i, size, largest);
     largest = tmp ? tmp : largest;
 
@@ -64,7 +67,7 @@ export class HeapSort extends Sortable {
     }
   }
 
-  public heapSort(): void {
+  heapSort(): void {
     let i: number;
     for (i = Math.floor(this.divSizes.length / 2) - 1; i >= 0; i--) {
       this.maxHeapify(this.divSizes.length, i);
