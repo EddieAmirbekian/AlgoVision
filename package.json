@@ -4,7 +4,7 @@
   "scripts": {
     "build": "ng build",
     "dev:start": "ng serve -o --port 2022",
-    "heroku-postbuild": "ng build --prod",
+    "heroku-postbuild": "ng build",
     "start": "node server.js"
   },
   "private": true,
