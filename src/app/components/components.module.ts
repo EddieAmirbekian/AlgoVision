@@ -24,4 +24,4 @@ import { AvMstModule } from './av-mst/av-mst.module';
   exports: [AvMstModule, AvNavComponent, AvPathfinderModule, AvSorterModule],
   providers: [ActionService, AlgorithmService, GridService, SortingService],
 })
-export class ControlsModule {}
+export class ComponentsModule {}

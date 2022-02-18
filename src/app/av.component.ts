@@ -5,10 +5,10 @@ import { Page } from './models/page.enum';
 
 @Component({
   selector: 'av-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  templateUrl: './av.component.html',
+  styleUrls: ['./av.component.scss'],
 })
-export class AppComponent {
+export class AvComponent {
   title = 'AlgoVision';
 
   constructor(private actionService: ActionService, private router: Router) {

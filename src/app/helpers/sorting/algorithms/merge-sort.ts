@@ -1,5 +1,5 @@
 import { Sortable } from '../sortable';
-import { ACCENT, SECONDARY, WARN } from '../../styles';
+import { ACCENT, SECONDARY, WARN } from '../styles';
 
 export class MergeSort extends Sortable {
   constructor(
