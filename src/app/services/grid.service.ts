@@ -30,8 +30,8 @@ export class GridService {
   colsCount = 59;
   readonly nodeSize = 25;
 
-  startNodePos: Point = new Point(10, 6);
-  endNodePos: Point = new Point(10, 52);
+  startNodePos: Point;
+  endNodePos: Point;
   nodes: BehaviorSubject<Node[][]> = new BehaviorSubject<Node[][]>([]);
 
   isMouseDown = false;
@@ -44,6 +44,15 @@ export class GridService {
   ) {
     this.rowsCount = this.calculateRowCount() - 7;
     this.colsCount = this.calculateColCount() - 2;
+    this.startNodePos = new Point(
+      Math.floor(this.rowsCount / 2),
+      Math.floor(this.colsCount / 6)
+    );
+    this.endNodePos = new Point(
+      Math.floor(this.rowsCount / 2),
+      5 * Math.floor(this.colsCount / 6)
+    );
+    console.log(this.rowsCount, this.colsCount);
     for (let i = 0; i < this.rowsCount; i++) {
       const row = [] as Node[];
       for (let j = 0; j < this.colsCount; j++) {

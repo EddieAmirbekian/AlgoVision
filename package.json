@@ -1,6 +1,6 @@
 {
   "name": "algo-vision",
-  "version": "1.6.3",
+  "version": "1.7.0",
   "scripts": {
     "build": "ng build",
     "dev:start": "ng serve -o --port 2022",
@@ -39,21 +39,6 @@
     "tslint": "^6.1.3",
     "typescript": "~4.5.2",
     "vrsource-tslint-rules": "^6.0.0"
-  },
-  "peerDependencies": {
-    "@angular/animations": "~13.1.0",
-    "@angular/cdk": "~13.1.0",
-    "@angular/common": "~13.1.0",
-    "@angular/compiler": "~13.1.0",
-    "@angular/core": "~13.1.0",
-    "@angular/forms": "~13.1.0",
-    "@angular/material": "~13.1.0",
-    "@angular/platform-browser": "~13.1.0",
-    "@angular/platform-browser-dynamic": "~13.1.0",
-    "@angular/router": "~13.1.0",
-    "rxjs": "~7.4.0",
-    "tslib": "^2.3.0",
-    "zone.js": "~0.11.4"
   },
   "engines": {
     "node": "16.13.2",
