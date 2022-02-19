@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
 import { AvPathfinderModule } from './av-pathfinder/av-pathfinder.module';
 import { AvSorterModule } from './av-sorter/av-sorter.module';
 import { AvMstModule } from './av-mst/av-mst.module';
+import { SnackBarService } from '../services/snack-bar.service';
 
 @NgModule({
   declarations: [AvNavComponent],
@@ -22,6 +23,12 @@ import { AvMstModule } from './av-mst/av-mst.module';
     RouterModule,
   ],
   exports: [AvMstModule, AvNavComponent, AvPathfinderModule, AvSorterModule],
-  providers: [ActionService, AlgorithmService, GridService, SortingService],
+  providers: [
+    ActionService,
+    AlgorithmService,
+    GridService,
+    SnackBarService,
+    SortingService,
+  ],
 })
 export class ComponentsModule {}

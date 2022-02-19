@@ -14,7 +14,7 @@ import {
 } from '../helpers/pathfinding/heuristics';
 import { Swarm } from '../helpers/pathfinding/algorithms/swarm';
 import { ConvergentSwarm } from '../helpers/pathfinding/algorithms/convergent-swarm';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackBarService } from './snack-bar.service';
 
 type Orientation = 'horizontal' | 'vertical';
 export type Speed = 'fast' | 'average' | 'slow';
@@ -40,7 +40,7 @@ export class GridService {
 
   constructor(
     private algorithmService: AlgorithmService,
-    private snackBar: MatSnackBar
+    private snackBarService: SnackBarService
   ) {
     this.rowsCount = this.calculateRowCount() - 7;
     this.colsCount = this.calculateColCount() - 2;
@@ -119,12 +119,10 @@ export class GridService {
   }
 
   addWeight(): void {
-    this.snackBar.open("Press 'left ctrl' key while drawing walls.", 'OK', {
-      duration: 5000,
-      horizontalPosition: 'end',
-      verticalPosition: 'top',
-      panelClass: ['av-snackbar-container'],
-    });
+    this.snackBarService.open(
+      "Press 'left ctrl' key while drawing walls.",
+      'OK'
+    );
   }
 
   doWallWeight(pos: Point, isWeight: boolean): void {
@@ -226,7 +224,7 @@ export class GridService {
         !nodePos.equals(this.endNodePos)
       ) {
         this.NODES[nodePos.x][nodePos.y].type =
-          this.getNodeByPos(nodePos).type !== NodeType.WEIGHT
+          this.getNodeByPos(nodePos).type !== NodeType.WVISITED
             ? NodeType.PATH
             : NodeType.WPATH;
       }
@@ -241,12 +239,7 @@ export class GridService {
           if (nodesInShortestPathOrder.length) {
             this.animateShortestPath(nodesInShortestPathOrder);
           } else {
-            this.snackBar.open('NO PATH!', 'OK', {
-              duration: 5000,
-              horizontalPosition: 'end',
-              verticalPosition: 'top',
-              panelClass: ['av-snackbar-container'],
-            });
+            this.snackBarService.open('NO PATH!', 'OK');
           }
         }, 10 * i);
         return;
@@ -364,6 +357,8 @@ export class GridService {
       case Algorithm.CONV_SWARM:
         this.doConvergentSwarm();
         break;
+      default:
+        this.snackBarService.open('Pick an algorithm!', 'OK');
     }
   }
 

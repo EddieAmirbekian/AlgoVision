@@ -8,6 +8,7 @@ import { MergeSort } from '../helpers/sorting/algorithms/merge-sort';
 import { QuickSort } from '../helpers/sorting/algorithms/quick-sort';
 import { SelectionSort } from '../helpers/sorting/algorithms/selection-sort';
 import { AlgorithmService } from './algorithm.service';
+import { SnackBarService } from './snack-bar.service';
 
 @Injectable()
 export class SortingService {
@@ -48,7 +49,10 @@ export class SortingService {
     this.sortSpeed.next(speed);
   }
 
-  constructor(private algorithmService: AlgorithmService) {
+  constructor(
+    private algorithmService: AlgorithmService,
+    private snackBarService: SnackBarService
+  ) {
     this.generateArray();
   }
 
@@ -74,7 +78,7 @@ export class SortingService {
         this.selectionSort(this.array.value);
         break;
       default:
-        console.error('Wrong algorithm.');
+        this.snackBarService.open('Pick and algorithm!', 'OK');
     }
   }
 
