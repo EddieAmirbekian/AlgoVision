@@ -52,7 +52,6 @@ export class GridService {
       Math.floor(this.rowsCount / 2),
       5 * Math.floor(this.colsCount / 6)
     );
-    console.log(this.rowsCount, this.colsCount);
     for (let i = 0; i < this.rowsCount; i++) {
       const row = [] as Node[];
       for (let j = 0; j < this.colsCount; j++) {
