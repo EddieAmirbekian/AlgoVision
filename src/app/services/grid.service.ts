@@ -112,8 +112,7 @@ export class GridService {
       }
       this.nodes.next(this.NODES);
       if (this.isDrawn) {
-        this.clearVisitedAndPath();
-        this.visualize();
+        this.visualize(true);
       }
     }
   }
@@ -343,7 +342,9 @@ export class GridService {
     fn.apply(this, [visitedNodesInOrder, nodesInShortestPathOrder]);
   }
 
-  visualize(): void {
+  visualize(isDrawn?: boolean): void {
+    this.isDrawn = !!isDrawn;
+    this.clearVisitedAndPath();
     switch (this.algorithmService.getAlgorithm()) {
       case Algorithm.ASTAR:
         this.doAStar();
