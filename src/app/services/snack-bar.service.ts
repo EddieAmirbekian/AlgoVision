@@ -7,7 +7,6 @@ export class SnackBarService {
     duration: 5000,
     horizontalPosition: 'end',
     verticalPosition: 'top',
-    panelClass: ['av-snackbar-container'],
   };
 
   constructor(private snackbar: MatSnackBar) {}

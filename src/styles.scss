@@ -34,16 +34,6 @@ $av-light-theme: mat.define-light-theme(
   @include mat.all-component-themes($av-dark-theme);
 }
 
-.av-snackbar-container {
-  background-color: #323232;
-  color: white;
-
-  button {
-    background-color: #b71c1c;
-    color: white;
-  }
-}
-
 html,
 body {
   height: 100%;

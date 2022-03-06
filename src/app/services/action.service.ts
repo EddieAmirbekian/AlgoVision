@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { ActionModel } from '../models/action.model';
 import { Algorithm } from '../models/algorithm.enum';
 import { AlgorithmService } from './algorithm.service';
@@ -136,6 +136,10 @@ export class ActionService {
       .subscribe(() => this.mstService.clear()),
   ];
 
+  pageChangeEvent$: BehaviorSubject<Page> = new BehaviorSubject<Page>(
+    Page.PATHFINDING
+  );
+
   getActions(): Observable<ActionModel[]> {
     switch (this.page) {
       case Page.MST:
@@ -153,6 +157,7 @@ export class ActionService {
 
   setPage(page: Page): void {
     this.page = page;
+    this.pageChangeEvent$.next(page);
   }
 
   setAlgorithm(algorithm: Algorithm): void {
