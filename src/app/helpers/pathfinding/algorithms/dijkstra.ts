@@ -17,11 +17,13 @@ export class Dijkstra {
   getNodesInOrder(): Node[] {
     const visitedNodesInOrder = [];
     this.startNode.distance = 0;
+    this.startNode.totalDistance = 0;
     const unvisitedNodes = this.getAllNodes();
     unvisitedNodes.forEach((node: Node) => {
       node.isVisited = false;
       if (!node.position.equals(this.startNode.position)) {
         node.distance = Infinity;
+        node.totalDistance = Infinity;
       }
     });
     while (unvisitedNodes.length) {

@@ -11,10 +11,18 @@ export class Astar extends Dijkstra {
     super(grid, startNode, endNode);
   }
 
+  protected sortNodesByDistance(unvisitedNodes: Node[]): void {
+    unvisitedNodes.sort(
+      (nodeA, nodeB) => nodeA.totalDistance - nodeB.totalDistance
+    );
+  }
+
   protected updateUnvisitedNeighbors(node: Node): void {
     const unvisitedNeighbors = this.getUnvisitedNeighbors(node);
     for (const neighbor of unvisitedNeighbors) {
-      neighbor.distance = node.distance + this.heuristic(node) * node.weight;
+      neighbor.distance = node.distance + neighbor.weight;
+      neighbor.totalDistance =
+        node.distance + neighbor.weight * this.heuristic(neighbor);
       neighbor.previousNode = node;
     }
   }

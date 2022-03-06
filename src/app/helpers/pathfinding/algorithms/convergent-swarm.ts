@@ -1,7 +1,7 @@
-import { Astar } from './astar';
 import { Node } from '../../../models/node.model';
+import { Swarm } from './swarm';
 
-export class ConvergentSwarm extends Astar {
+export class ConvergentSwarm extends Swarm {
   constructor(
     public grid: Node[][],
     public startNode: Node,
