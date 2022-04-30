@@ -64,23 +64,6 @@ export class ActionService {
     new ActionModel('Clear Path').button().subscribe(() => {
       this.gridService.clearVisitedAndPath(true);
     }),
-    new ActionModel('Speed')
-      .menu()
-      .addChild(
-        new ActionModel('Fast').subscribe(() =>
-          this.gridService.changeSpeed('fast')
-        )
-      )
-      .addChild(
-        new ActionModel('Average').subscribe(() =>
-          this.gridService.changeSpeed('average')
-        )
-      )
-      .addChild(
-        new ActionModel('Slow').subscribe(() =>
-          this.gridService.changeSpeed('slow')
-        )
-      ),
   ];
 
   private sortingActions: ActionModel[] = [
@@ -119,10 +102,10 @@ export class ActionService {
           this.setAlgorithm(Algorithm.SELECTION);
         })
       ),
-    new ActionModel('Sort!')
+    new ActionModel('Visualize!')
       .button()
       .raised()
-      .accent()
+      .warn()
       .subscribe(() => {
         this.sort();
       }),
