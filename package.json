@@ -1,6 +1,6 @@
 {
   "name": "algo-vision",
-  "version": "1.8.1",
+  "version": "2.0.0",
   "scripts": {
     "dev:start": "ng serve -o --port 2022",
     "heroku-postbuild": "ng build",
