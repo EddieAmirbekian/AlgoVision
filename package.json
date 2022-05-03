@@ -2,7 +2,7 @@
   "name": "algo-vision",
   "version": "2.0.0",
   "scripts": {
-    "dev:start": "ng serve -o --port 2022",
+    "dev:start": "ng serve -o",
     "heroku-postbuild": "ng build",
     "start": "node server.js"
   },
